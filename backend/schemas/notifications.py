@@ -17,6 +17,7 @@ class NotificationType(StrEnum):
     SCAN_COMPLETED = "scan.completed"
     SCAN_FAILED = "scan.failed"
     DRAFT_CREATED = "draft.created"
+    DRAFT_SENT = "draft.sent"
 
 
 class NotificationEvent(BaseModel):
