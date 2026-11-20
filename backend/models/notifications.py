@@ -23,7 +23,6 @@ class Notifications(Base):
     )
     event_id: Mapped[UUID] = mapped_column(
         SQLUUID,
-        ForeignKey("events.id"),
         index=True,
         nullable=False,
         unique=True,
