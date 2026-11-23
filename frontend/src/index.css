@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
+:root {
+  --bg: #f4f1ea;
+  --surface: #fbfaf6;
+  --fg: #1a1a17;
+  --muted: #6b675e;
+  --border: #d9d4c7;
+  --accent: #b3261e;
+  --accent-fg: #ffffff;
+  --success: #2f6b3a;
+  --warning: #8a5a00;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121210;
+    --surface: #1a1a17;
+    --fg: #ebe7dc;
+    --muted: #8f8a7e;
+    --border: #2e2c27;
+    --accent: #e5534b;
+    --accent-fg: #121210;
+    --success: #6fbf7f;
+    --warning: #d9a441;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #121210;
+  --surface: #1a1a17;
+  --fg: #ebe7dc;
+  --muted: #8f8a7e;
+  --border: #2e2c27;
+  --accent: #e5534b;
+  --accent-fg: #121210;
+  --success: #6fbf7f;
+  --warning: #d9a441;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+
+  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --radius-box: 2px;
+}
+
+body {
+  @apply bg-bg text-fg font-sans antialiased;
+}
+
+:focus-visible {
+  @apply outline-2 outline-offset-2 outline-accent;
+}
