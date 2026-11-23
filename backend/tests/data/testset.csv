@@ -2,20 +2,20 @@ domain,service,valid_urls,type,contact_email,where_found,notes
 amazon.fr,Amazon,https://www.amazon.fr/privacy/data-deletion|https://www.amazon.com/privacy/data-deletion,direct,,Gérer vos données > Fermer mon compte,fermeture globale tous sites Amazon
 spotify.com,Spotify,https://support.spotify.com/article/close-account/|https://support.spotify.com/close-account,help,,support > Account help,résilier Premium avant ; réactivable 7 jours
 deezer.com,Deezer,https://support.deezer.com/hc/en-gb/articles/201168742-Delete-Your-Deezer-Account|https://www.deezer.com/account,settings,,Paramètres du compte > bas de page,suppression web uniquement + e-mail de validation
-linkedin.com,LinkedIn,https://www.linkedin.com/help/linkedin/answer/63|https://www.linkedin.com/help/learning/answer/63,help,,Préférences > Gestion du compte > Fermer le compte,
+linkedin.com,LinkedIn,https://www.linkedin.com/help/linkedin/answer/63|https://www.linkedin.com/help/learning/answer/63|https://www.linkedin.com/psettings/account-management/close-action-needed,help,,Préférences > Gestion du compte > Fermer le compte,
 paypal.com,PayPal,https://www.paypal.com/smarthelp/article/how-do-i-close-my-paypal-account-faq1215|https://www.paypal.com/myaccount/privacy/data/deletion,direct,,Paramètres > Fermer votre compte,A VERIFIER : page data/deletion (connexion requise)
 indeed.com,Indeed,https://fr.indeed.com/help/job-seekers/articles/204488880-fermer-un-compte|https://secure.indeed.com/settings/account,settings,,Paramètres du compte > Fermer mon compte,compte Glassdoor lié à supprimer à part
 bitwarden.com,Bitwarden,https://bitwarden.com/help/delete-your-account/|https://bitwarden.com/help/article/delete-your-account,help,,Paramètres > Mon compte,A VERIFIER : ancienne URL dataset (redirection ?)
 todoist.com,Todoist,https://www.todoist.com/fr/help/articles/delete-your-account-luq3xH|https://todoist.com/app/settings/account,settings,,avatar > Paramètres > Supprimer mon compte,quitter les espaces d'équipe avant
-vinted.fr,Vinted,https://www.vinted.fr/help/88,help,,Paramètres du compte > Supprimer mon compte,dataset donne vinted.com : A VERIFIER si redirige vers .fr
+vinted.fr,Vinted,https://www.vinted.fr/help/88|https://www.vinted.fr/member/general/delete_account,help,,Paramètres du compte > Supprimer mon compte,dataset donne vinted.com : A VERIFIER si redirige vers .fr
 sncf-connect.com,SNCF Connect,https://www.sncf-connect.com/aide/mon-identifiant-sncf,help,,centre d'aide > chatbot,dataset donne une page EN générique : refusé
-backmarket.fr,Back Market,https://help.backmarket.com/hc/fr-be/articles/360026642634-Comment-supprimer-mon-compte-client,help,,Compte > Profil > Supprimer mon compte,A VERIFIER : version fr-be ; bloqué si commande/wallet en cours
+backmarket.fr,Back Market,https://help.backmarket.com/hc/fr-be/articles/360026642634-Comment-supprimer-mon-compte-client|https://www.backmarket.fr/fr-fr/dashboard/profile,help,,Compte > Profil > Supprimer mon compte,A VERIFIER : version fr-be ; bloqué si commande/wallet en cours
 cdiscount.com,Cdiscount,,none,,aucune page trouvée,courrier + pièce d'identité selon forums -> cas lettre RGPD
-doctolib.fr,Doctolib,,email_only,contact.dataprivacy@doctolib.com,note d'information patients (PDF),dataset donne doctolib.de (mauvais pays) : refusé
-busuu.com,Busuu,https://help.busuu.com/hc/fr/articles/16171076944913-Comment-supprimer-mon-compte|https://www.busuu.com/dashboard#/settings/account,settings,,photo de profil > Configuration > Compte,
+doctolib.fr,Doctolib,https://www.doctolib.fr/account/edit,email_only,contact.dataprivacy@doctolib.com,note d'information patients (PDF),dataset donne doctolib.de (mauvais pays) : refusé
+busuu.com,Busuu,https://help.busuu.com/hc/fr/articles/16171076944913-Comment-supprimer-mon-compte|https://www.busuu.com/dashboard#/settings/account|https://help.busuu.com/hc/en-gb/articles/16171076944913-How-do-I-delete-my-account,settings,,photo de profil > Configuration > Compte,
 jotform.com,Jotform,https://www.jotform.com/fr/help/comment-supprimer-mon-compte/,help,,Profil > bas de page,mot de passe requis
-turo.com,Turo,https://help.turo.com/fr/fermer-votre-compte-SJQn4EeEq,help,,Compte > Fermer mon compte,dataset donne support.turo.com (ancien helpdesk ?) : A VERIFIER
-carvertical.com,carVertical,https://www.carvertical.com/fr/help/compte-et-depannage/je-veux-supprimer-mon-compte,help,,Mon compte > Paramètres > bouton rouge,petit site
+turo.com,Turo,https://help.turo.com/fr/fermer-votre-compte-SJQn4EeEq|https://help.turo.com/en_us/closing-your-account-SJQn4EeEq,help,,Compte > Fermer mon compte,dataset donne support.turo.com (ancien helpdesk ?) : A VERIFIER
+carvertical.com,carVertical,https://www.carvertical.com/fr/help/compte-et-depannage/je-veux-supprimer-mon-compte|https://www.carvertical.com/help/account-troubleshooting/how-can-i-delete-my-carvertical-account,help,,Mon compte > Paramètres > bouton rouge,petit site
 c-and-a.com,C&A,https://www.c-and-a.com/fr/fr/shop/service/compte-client/supprimer-le-compte,direct,,service client > compte client,bouton « Supprimer le compte maintenant » (connexion requise)
-topachat.com,TopAchat,https://www.topachat.com/p/assistance/mon-compte/suppression-de-compte,help,,espace client > Mes informations,petit site FR ; déconseillé si garantie en cours
+topachat.com,TopAchat,https://www.topachat.com/p/assistance/mon-compte/suppression-de-compte|https://secure.topachat.com/Account,help,,espace client > Mes informations,petit site FR ; déconseillé si garantie en cours
 funbooker.com,Funbooker,https://www.funbooker.com/fr/page/suppression-compte,help,,page dédiée,petit site FR ; procédure même sans accès au compte

@@ -11,7 +11,7 @@ Resolver = Callable[[str], Awaitable[list[str]]]
 
 ALLOWED_SCHEMES = ("http", "https")
 ALLOWED_PORTS = (None, 80, 443)
-TEXT_TYPES = ("html", "xml", "text")
+TEXT_TYPES = ("html", "xml", "text", "json")
 
 
 class UnsafeURL(Exception):

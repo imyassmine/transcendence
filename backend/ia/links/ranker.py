@@ -44,6 +44,7 @@ def build_prompt(domain: str, candidates: list[Candidate], service: str | None =
         if c.excerpt:
             line += f"\n   page -> {c.excerpt}"
         lines.append(line)
+    lines.append("Réponds en français.")
     return "\n".join(lines)
 
 

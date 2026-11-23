@@ -4,7 +4,8 @@ from html.parser import HTMLParser
 from urllib.parse import urljoin, urlsplit
 
 STRONG = ["delete", "deletion", "supprim", "suppression", "close-account", "close account",
-          "close your account", "closeaccount", "fermer mon compte", "fermer le compte",
+          "close your account", "close-your-account", "closing your account",
+          "closing-your-account", "closeaccount", "fermer mon compte", "fermer le compte",
           "fermer votre compte", "fermer ton compte", "fermeture du compte", "fermeture de compte",
           "fermeture de votre compte", "cloturer", "desactiv", "deactivat", "erase", "effacement",
           "remove account", "account-removal", "data-deletion", "loschen"]

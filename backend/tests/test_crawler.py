@@ -111,3 +111,80 @@ async def test_probe_redirected_elsewhere_is_ignored():
         return httpx.Response(404, text="", headers={"content-type": "text/html"})
     res = await crawler(redirecting).crawl("shop.example.com")
     assert not any("showCountrySelector" in c.url for c in res.candidates)
+
+
+from ia.links.crawler import (help_hosts_for, is_catch_all, is_sitemap_index, pick_child_sitemaps, same_brand,
+                              zendesk_results)
+
+
+def test_same_brand_and_help_hosts():
+    assert same_brand("https://help.backmarket.com/hc/fr", "backmarket.fr")
+    assert not same_brand("https://autre.com/x", "backmarket.fr")
+    hosts = help_hosts_for("backmarket.fr")
+    assert "help.backmarket.fr" in hosts and "help.backmarket.com" in hosts
+    assert help_hosts_for("x.com").count("help.x.com") == 1
+
+
+def test_sitemap_helpers():
+    assert is_sitemap_index("<?xml?><sitemapindex><sitemap><loc>a</loc></sitemap></sitemapindex>")
+    assert not is_sitemap_index("<urlset><url><loc>a</loc></url></urlset>")
+    picked = pick_child_sitemaps(["https://x.com/sitemap-products-1.xml",
+                                  "https://x.com/sitemap-help-fr.xml",
+                                  "https://x.com/sitemap-blog.xml"], limit=1)
+    assert picked == ["https://x.com/sitemap-help-fr.xml"]
+
+
+def test_zendesk_results():
+    data = '{"results": [{"html_url": "https://help.x.com/hc/fr/articles/1-Supprimer", "title": "Supprimer mon compte"}, {"title": "sans url"}]}'
+    assert zendesk_results(data) == [("https://help.x.com/hc/fr/articles/1-Supprimer", "Supprimer mon compte")]
+    assert zendesk_results("pas du json") == []
+    assert zendesk_results("[1]") == []
+
+
+DEEP = {
+    ("bigshop.fr", "/"): ("<a href='/fr'>Accueil</a>", "text/html"),
+    ("bigshop.fr", "/robots.txt"): ("User-agent: *\nSitemap: https://bigshop.fr/sm-index.xml\n", "text/plain"),
+    ("bigshop.fr", "/sm-index.xml"): ("<sitemapindex><sitemap><loc>https://bigshop.fr/sm-help.xml</loc></sitemap></sitemapindex>", "application/xml"),
+    ("bigshop.fr", "/sm-help.xml"): ("<urlset><url><loc>https://bigshop.fr/fr/help/close-account</loc></url></urlset>", "application/xml"),
+    ("help.bigshop.com", "/"): ("<a href='/hc/fr/categories/1'>Mon compte</a>", "text/html"),
+    ("help.bigshop.com", "/api/v2/help_center/articles/search.json"): (
+        '{"results": [{"html_url": "https://help.bigshop.com/hc/fr/articles/42-Supprimer-mon-compte", "title": "Supprimer mon compte"}]}',
+        "application/json"),
+}
+
+
+def deep_handler(r: httpx.Request) -> httpx.Response:
+    hit = DEEP.get((r.url.host, r.url.path))
+    if hit is None:
+        return httpx.Response(404, text="", headers={"content-type": "text/html"})
+    body, ctype = hit
+    return httpx.Response(200, text=body, headers={"content-type": ctype})
+
+
+async def test_crawl_follows_robots_sitemap_index():
+    urls = [c.url for c in (await crawler(deep_handler).crawl("bigshop.fr")).candidates]
+    assert "https://bigshop.fr/fr/help/close-account" in urls
+
+
+async def test_crawl_help_subdomain_and_zendesk_search():
+    res = await crawler(deep_handler).crawl("bigshop.fr")
+    z = [c for c in res.candidates if "zendesk" in c.origins]
+    assert z and z[0].url == "https://help.bigshop.com/hc/fr/articles/42-Supprimer-mon-compte"
+    assert z[0].text == "Supprimer mon compte"
+    assert any("help" in c.origins for c in res.candidates)
+
+
+
+def test_is_catch_all():
+    from ia.links.fetcher import Page
+    assert is_catch_all(Page("https://x.com/abc-page-inexistante", 200, ""), "/abc-page-inexistante")
+    assert not is_catch_all(Page("https://x.com/abc", 404, ""), "/abc")
+    assert not is_catch_all(Page("https://x.com/", 200, ""), "/abc")
+    assert not is_catch_all(None, "/abc")
+
+
+async def test_catch_all_site_ignores_probes():
+    def everything_200(r):
+        return httpx.Response(200, text="<div id='app'></div>", headers={"content-type": "text/html"})
+    res = await crawler(everything_200).crawl("spa.example.com")
+    assert not any("probe" in c.origins for c in res.candidates)

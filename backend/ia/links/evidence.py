@@ -8,7 +8,8 @@ from .parsing import STRONG, fold
 
 EXCERPT_LEN = 300
 ENRICH_LIMIT = 10
-LOGIN_HINTS = ["login", "signin", "sign-in", "connexion", "auth"]
+LOGIN_HINTS = ["login", "signin", "sign-in", "connexion", "auth", "register", "signup",
+               "sign-up", "inscription", "ax/claim", "ap/signin"]
 SKIP_TAGS = {"script", "style", "noscript", "svg", "template", "head"}
 
 
