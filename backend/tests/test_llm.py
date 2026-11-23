@@ -110,7 +110,13 @@ CANDS = [Candidate("https://x.com/legal/privacy", "Confidentialité", 2.0),
 def test_build_prompt_numbers_candidates():
     p = build_prompt("x.com", CANDS, "X")
     assert "Site : X (x.com)" in p
-    assert "1. https://x.com/help/delete-my-account | texte : -" in p
+    assert "1. https://x.com/help/delete-my-account | texte du lien : -" in p
+    assert "page ->" not in p
+
+
+def test_build_prompt_includes_excerpt():
+    c = Candidate("https://x.com/p/1", "Aide", 2.0, excerpt="titre : Supprimer votre compte")
+    assert "   page -> titre : Supprimer votre compte" in build_prompt("x.com", [c])
 
 
 async def test_rank_picks_by_index():
@@ -146,3 +152,18 @@ async def test_rank_no_candidates_no_call():
     def fail(r):
         raise AssertionError("ne doit pas appeler le LLM")
     assert await rank(client(fail), "x.com", []) is None
+
+
+async def test_think_flag_sent_only_when_set(monkeypatch):
+    seen = []
+
+    def handler(r):
+        seen.append(json.loads(r.content))
+        return answer("ok")
+    monkeypatch.delenv("OLLAMA_THINK", raising=False)
+    await client(handler).chat([])
+    await client(handler, think=False).chat([])
+    monkeypatch.setenv("OLLAMA_THINK", "false")
+    await client(handler).chat([])
+    assert "think" not in seen[0]
+    assert seen[1]["think"] is False and seen[2]["think"] is False

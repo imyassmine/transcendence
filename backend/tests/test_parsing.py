@@ -99,3 +99,9 @@ def test_find_privacy_emails_ignores_non_privacy():
 
 def test_find_privacy_emails_empty():
     assert find_privacy_emails("<p>rien</p>", []) == []
+
+
+def test_score_fermer_alone_is_not_strong():
+    assert score_link("https://x.com/shop?showCountrySelector=true", "Fermer") < 5
+    assert score_link("https://x.com/p", "Fermer mon compte") >= 7
+    assert score_link("https://x.com/p", "Fermeture du compte") >= 7

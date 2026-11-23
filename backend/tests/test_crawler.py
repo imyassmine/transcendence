@@ -1,7 +1,7 @@
 import httpx
 import pytest
 
-from ia.links.crawler import Crawler, canonical, same_site
+from ia.links.crawler import Crawler, canonical, landed_on, same_site
 from ia.links.fetcher import SafeFetcher
 
 pytestmark = pytest.mark.anyio
@@ -94,3 +94,20 @@ async def test_crawl_dead_site_returns_empty():
         raise httpx.ConnectError("down")
     res = await crawler(down).crawl("dead.example.com")
     assert res.candidates == [] and res.privacy_url is None and res.emails == []
+
+
+def test_landed_on():
+    assert landed_on("https://x.com/account", "/account")
+    assert landed_on("https://x.com/fr-fr/account/", "/account")
+    assert not landed_on("https://x.com/shop?showCountrySelector=true", "/account/delete")
+
+
+async def test_probe_redirected_elsewhere_is_ignored():
+    def redirecting(r):
+        if r.url.path == "/account/delete":
+            return httpx.Response(302, headers={"location": "/shop?showCountrySelector=true"})
+        if r.url.path == "/shop":
+            return httpx.Response(200, text="<p>Boutique</p>", headers={"content-type": "text/html"})
+        return httpx.Response(404, text="", headers={"content-type": "text/html"})
+    res = await crawler(redirecting).crawl("shop.example.com")
+    assert not any("showCountrySelector" in c.url for c in res.candidates)

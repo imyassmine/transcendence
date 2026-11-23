@@ -9,18 +9,28 @@ import httpx
 Message = dict[str, str]
 
 RETRY_STATUS = {429, 500, 502, 503, 504}
+NUM_CTX = 4096
 
 
 class LLMError(Exception):
     pass
 
 
+def _env_bool(name: str) -> bool | None:
+    value = os.getenv(name)
+    if value is None or value == "":
+        return None
+    return value.strip().lower() in ("1", "true", "yes", "on")
+
+
 class OllamaClient:
     def __init__(self, base_url: str | None = None, model: str | None = None,
                  client: httpx.AsyncClient | None = None,
-                 timeout: float = 120.0, retries: int = 2, backoff: float = 0.5) -> None:
+                 timeout: float = 300.0, retries: int = 2, backoff: float = 0.5,
+                 think: bool | None = None) -> None:
         self.base_url = (base_url or os.getenv("OLLAMA_URL", "http://localhost:11434")).rstrip("/")
-        self.model = model or os.getenv("OLLAMA_MODEL", "qwen2.5:3b")
+        self.model = model or os.getenv("OLLAMA_MODEL", "qwen2.5:7b")
+        self.think = think if think is not None else _env_bool("OLLAMA_THINK")
         self.retries = retries
         self.backoff = backoff
         self.client = client or httpx.AsyncClient(timeout=timeout)
@@ -31,10 +41,12 @@ class OllamaClient:
             "model": self.model,
             "messages": messages,
             "stream": stream,
-            "options": {"temperature": temperature},
+            "options": {"temperature": temperature, "num_ctx": NUM_CTX},
         }
         if schema is not None:
             body["format"] = schema
+        if self.think is not None:
+            body["think"] = self.think
         return body
 
     async def chat(self, messages: list[Message], schema: dict[str, Any] | None = None,

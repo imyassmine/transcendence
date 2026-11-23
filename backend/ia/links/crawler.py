@@ -22,6 +22,7 @@ class Candidate:
     text: str = ""
     score: float = 0.0
     origins: set[str] = field(default_factory=set)
+    excerpt: str = ""
 
 
 @dataclass
@@ -39,6 +40,10 @@ def same_site(url: str, domain: str) -> bool:
 def canonical(url: str) -> str:
     p = urlsplit(url)
     return urlunsplit((p.scheme, p.netloc.lower(), p.path.rstrip("/") or "/", p.query, ""))
+
+
+def landed_on(final_url: str, path: str) -> bool:
+    return urlsplit(final_url).path.rstrip("/").lower().endswith(path.rstrip("/").lower())
 
 
 def ok(page: Page | None) -> bool:
@@ -79,8 +84,9 @@ class Crawler:
                     add(loc, "", "sitemap")
 
         for path, page in zip(PROBE_PATHS, probes):
-            if page is not None and page.status == 200 and same_site(page.url, domain):
-                add(page.url, path, "probe", bonus=PROBE_BONUS)
+            if (page is not None and page.status == 200 and same_site(page.url, domain)
+                    and landed_on(page.url, path)):
+                add(page.url, "", "probe", bonus=PROBE_BONUS)
 
         emails = find_privacy_emails(home.text, home_links) if ok(home) else []
         privacy = next((c for c in sorted(cands.values(), key=lambda c: -c.score)
