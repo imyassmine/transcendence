@@ -218,3 +218,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+.ollama/
+.ollama/
+__pycache__/
+__pycache__/

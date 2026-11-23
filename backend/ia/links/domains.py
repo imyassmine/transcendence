@@ -1,5 +1,5 @@
 from urllib.parse import urlsplit
-import tldextract
+import tldextract # type: ignore
 
 
 _extract = tldextract.TLDExtract(suffix_list_urls=(), cache_dir=None)
