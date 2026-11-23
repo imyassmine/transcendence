@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { Button } from '../components/ui/Button'
 import { TextField } from '../components/ui/TextField'
-import { isValidEmail } from '../lib/validation'
+import { isValidEmail } from '../utils/validation'
 
 type LoginErrors = {
   email?: string
