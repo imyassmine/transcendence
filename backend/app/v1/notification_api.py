@@ -4,7 +4,7 @@ from uuid import UUID
 from db import get_db
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel, ConfigDict, Field
-from schemas import User
+from schemas import NotificationReadStatus, User
 from services import (
     count_unread_notifications_handler,
     get_current_user,
@@ -42,9 +42,10 @@ async def get_all_notifications(
     session: AsyncSession = Depends(get_db),
     limit: int = Query(10, ge=1, le=100),
     offset: int = Query(0, ge=0),
+    read_status: NotificationReadStatus = NotificationReadStatus.UNREAD,
 ) -> list[NotificationResponse]:
     notifications = await list_notification_handler(
-        user.id, session, limit, offset
+        user.id, session, limit, offset, read_status=read_status
     )
     return [
         NotificationResponse.model_validate(item) for item in notifications
@@ -65,7 +66,7 @@ async def mark_notification_read(
     id: UUID,
     user: User = Depends(get_current_user),
     session: AsyncSession = Depends(get_db),
-):
+) -> NotificationResponse:
     notification = await mark_notification_read_handler(user.id, id, session)
     if not notification:
         raise HTTPException(

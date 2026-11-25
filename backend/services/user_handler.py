@@ -1,18 +1,24 @@
+from typing import Annotated
+
+from core.security import decode_access_token
+from db import get_db
+from fastapi import Cookie, Depends, HTTPException, status
 from models import Users
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-
-#TODO: Finished in authentication
-
-async def check_pwd(plain_pwd, hashed_pwd):
-    pass
 
 
 async def get_current_user(
-    name: str, session: AsyncSession, password: str
+    session: AsyncSession = Depends(get_db),
+    access_token: Annotated[str | None, Cookie()] = None,
 ) -> Users:
-    user = await session.scalar(select(Users).where(Users.name == name))
+    if access_token:
+        user_id = decode_access_token(access_token)
+        if user_id is not None:
+            user = await session.get(Users, user_id)
+            if user is not None:
+                return user
 
-    if not user or not check_pwd(password, user.hashed_pwd):
-        raise ValueError("Invalid username or passwor")
-    return user
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Invalid or missing access token",
+    )

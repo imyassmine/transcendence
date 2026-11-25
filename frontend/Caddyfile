@@ -1,0 +1,16 @@
+{
+	auto_https disable_redirects
+	skip_install_trust
+}
+
+localhost {
+	tls internal
+	handle /api/* {
+		reverse_proxy backend:8000
+	}
+	handle {
+		root * /srv
+		try_files {path} /index.html
+		file_server
+	}
+}
