@@ -11,6 +11,8 @@ SYSTEM = """Tu écris UN seul court paragraphe (2 à 4 phrases) d'une lettre for
 Ce paragraphe explique, à la première personne, pourquoi la personne veut supprimer son compte.
 Règles STRICTES :
 - Utilise UNIQUEMENT les faits fournis. N'invente aucun fait, aucune date, aucun chiffre.
+- Ne dis jamais QUAND la fuite a eu lieu (pas de « récente », « récemment », « hier ») : on ne le sait pas.
+- Écris « fuite de données », jamais « leak » ni « hack ».
 - Ne parle JAMAIS de droit : pas d'article, pas de loi, pas de RGPD, pas de consentement, pas de délai, pas de CNIL. La partie juridique est écrite ailleurs.
 - Pas de salutation, pas de formule de politesse, pas de signature, pas de nom.
 - Ton formel et poli, phrases correctes, vouvoiement envers l'entreprise.
@@ -19,7 +21,8 @@ Règles STRICTES :
 
 FORBIDDEN_RE = re.compile(
     r"\b(articles?|art\.|rgpd|gdpr|r[èe]glement|lois?|cnil|consentement|d[ée]lais?|mois|jours?|"
-    r"paragraphe|madame|monsieur|cordialement|salutations|agr[ée]er)\b", re.IGNORECASE)
+    r"paragraphe|madame|monsieur|cordialement|salutations|agr[ée]er|leak|leaks|hack[ée]?|"
+    r"r[ée]cente?s?|r[ée]cemment|hier|semaine)\b", re.IGNORECASE)
 CONTRADICTION_RE = re.compile(r"\bne\s+(retire|souhaite|demande|veux)\s+pas\b", re.IGNORECASE)
 PLACEHOLDER_RE = re.compile(r"\[[^\]]*\]|\bX{3,}\b|<[^>]+>|\{[^}]+\}")
 DIGIT_RE = re.compile(r"\d+")
@@ -105,8 +108,23 @@ def validate_letter(text: str, req: LetterRequest, ref_keys: list[str]) -> list[
     return problems
 
 
+SOFT_FIXES = [
+    (re.compile(r"\s*\b(r[ée]cente?s?)\b", re.IGNORECASE), ""),
+    (re.compile(r"\s*\b(r[ée]cemment)\b", re.IGNORECASE), ""),
+    (re.compile(r"\bun\s+(leak|hack)\b", re.IGNORECASE), "une fuite"),
+    (re.compile(r"\b(leak|hack)s?\b", re.IGNORECASE), "fuite"),
+]
+
+
 def clean(text: str) -> str:
-    return " ".join(text.replace("\n", " ").split()).strip()
+    return " ".join(text.replace("\n", " ").split()).strip().strip('"«» ')
+
+
+def soften(text: str) -> str:
+    for pattern, repl in SOFT_FIXES:
+        text = pattern.sub(repl, text)
+    text = re.sub(r"\s+([,.;:])", r"\1", text)
+    return " ".join(text.split())
 
 
 class LetterGenerator:
@@ -128,7 +146,7 @@ class LetterGenerator:
         if problems := validate_letter(body, req, keys):
             warnings += problems
         return Letter(subject=build_subject(req), body=body,
-                      recipient_email=req.recipient_email,
+                      recipient_email=req.recipient_email, contact_url=req.contact_url,
                       legal_refs=[REFS[k].ref for k in keys],
                       generated_by=by, warnings=warnings)  # type: ignore[arg-type]
 
@@ -139,19 +157,25 @@ class LetterGenerator:
         if self.llm is None or not has_facts(req):
             return self.template(req)
         problems: list[str] = []
+        messages = self._messages(req)
         for _ in range(attempts):
             try:
-                text = clean(await self.llm.chat(self._messages(req), temperature=0.4))
+                raw = clean(await self.llm.chat(messages, temperature=0.4))
             except LLMError as e:
                 problems = [str(e)]
                 break
+            text = soften(raw)
             if not (problems := validate_context(text, req)):
                 return self._letter(req, text, "llm")
+            messages = self._messages(req) + [
+                {"role": "assistant", "content": raw},
+                {"role": "user", "content": "Ce paragraphe est refusé : " + " ; ".join(problems)
+                 + ". Réécris-le en respectant toutes les règles."}]
         return self.template(req, problems)
 
     async def stream(self, req: LetterRequest) -> AsyncIterator[dict[str, Any]]:
         yield {"type": "meta", "subject": build_subject(req),
-               "recipient_email": req.recipient_email}
+               "recipient_email": req.recipient_email, "contact_url": req.contact_url}
         if self.llm is None or not has_facts(req):
             letter = self.template(req)
             yield {"type": "delta", "text": letter.body}
@@ -167,7 +191,7 @@ class LetterGenerator:
             yield {"type": "replace", "letter": self.template(req, [str(e)]).model_dump(),
                    "problems": [str(e)]}
             return
-        context = clean("".join(parts))
+        context = soften(clean("".join(parts)))
         if problems := validate_context(context, req):
             yield {"type": "replace", "letter": self.template(req, problems).model_dump(),
                    "problems": problems}

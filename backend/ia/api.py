@@ -33,6 +33,7 @@ class IAServices:
     finder: LinkFinder
     generator: LetterGenerator
     cache: TTLCache[DeletionLink]
+    contacts: TTLCache[tuple[str | None, str | None]]
     link_limiter: RateLimiter
     letter_limiter: RateLimiter
     semaphore: asyncio.Semaphore
@@ -43,6 +44,7 @@ def build_services(finder: LinkFinder, generator: LetterGenerator) -> IAServices
         finder=finder,
         generator=generator,
         cache=TTLCache(LINK_CACHE_TTL_S),
+        contacts=TTLCache(LINK_CACHE_TTL_S),
         link_limiter=RateLimiter(LINK_RATE_PER_MIN),
         letter_limiter=RateLimiter(LETTER_RATE_PER_MIN),
         semaphore=asyncio.Semaphore(MAX_PARALLEL_FINDS),
@@ -89,6 +91,19 @@ def sse(event: dict[str, Any]) -> str:
     return f"event: {event['type']}\ndata: {data}\n\n"
 
 
+async def find_recipient(ia: IAServices, domain: str,
+                         service: str | None) -> tuple[str | None, str | None]:
+    link = ia.cache.get(domain)
+    if link and link.contact_email:
+        return link.contact_email, None
+    if (cached := ia.contacts.get(domain)) is not None:
+        return cached
+    async with ia.semaphore:
+        contact = await ia.finder.find_contact(domain, service)
+    ia.contacts.set(domain, contact)
+    return contact
+
+
 router = APIRouter(prefix="/ia", tags=["ia"])
 
 
@@ -114,9 +129,9 @@ async def post_letter(req: LetterRequest, stream: bool = True,
                       user: str = Depends(get_user_key)) -> Letter | StreamingResponse:
     check_rate(ia.letter_limiter, user)
     if req.recipient_email is None and req.domain:
-        cached = ia.cache.get(normalize_domain(req.domain))
-        if cached and cached.contact_email:
-            req = req.model_copy(update={"recipient_email": cached.contact_email})
+        email, page = await find_recipient(ia, normalize_domain(req.domain), req.service_name)
+        req = req.model_copy(update={"recipient_email": email,
+                                     "contact_url": req.contact_url or page})
     if not stream:
         return await ia.generator.generate(req)
 

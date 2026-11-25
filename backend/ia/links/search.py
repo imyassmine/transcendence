@@ -1,5 +1,7 @@
+import json
 import os
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
+from pathlib import Path
 from urllib.parse import urlsplit
 
 import httpx
@@ -33,11 +35,30 @@ def parse_results(data: object) -> list[SearchResult]:
 
 class SearxClient:
     def __init__(self, base_url: str | None = None, client: httpx.AsyncClient | None = None,
-                 timeout: float = 15.0, language: str = "fr") -> None:
+                 timeout: float = 15.0, language: str = "fr",
+                 cache_file: str | Path | None = None) -> None:
         self.base_url = (base_url or os.getenv("SEARXNG_URL", "http://localhost:8080")).rstrip("/")
         self.client = client or httpx.AsyncClient(timeout=timeout)
         self.language = language
-        self._cache: dict[str, list[SearchResult]] = {}
+        path = cache_file or os.getenv("SEARCH_CACHE_FILE")
+        self.cache_file = Path(path) if path else None
+        self._cache: dict[str, list[SearchResult]] = self._load()
+
+    def _load(self) -> dict[str, list[SearchResult]]:
+        if not self.cache_file or not self.cache_file.exists():
+            return {}
+        try:
+            raw = json.loads(self.cache_file.read_text(encoding="utf-8"))
+            return {q: [SearchResult(**r) for r in rs] for q, rs in raw.items()}
+        except (ValueError, TypeError):
+            return {}
+
+    def _save(self) -> None:
+        if not self.cache_file:
+            return
+        self.cache_file.parent.mkdir(parents=True, exist_ok=True)
+        data = {q: [asdict(r) for r in rs] for q, rs in self._cache.items()}
+        self.cache_file.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
 
     async def search(self, query: str) -> list[SearchResult]:
         if query in self._cache:
@@ -50,7 +71,9 @@ class SearxClient:
             results = parse_results(r.json())
         except (httpx.HTTPError, ValueError):
             return []
-        self._cache[query] = results
+        if results:
+            self._cache[query] = results
+            self._save()
         return results
 
     async def for_domain(self, domain: str) -> tuple[list[SearchResult], list[SearchResult]]:

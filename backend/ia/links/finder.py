@@ -5,7 +5,7 @@ from typing import Literal
 from urllib.parse import parse_qs, urlsplit, urlunsplit
 
 from ..llm import OllamaClient
-from .crawler import Candidate, Crawler, canonical, same_brand, same_site
+from .crawler import Candidate, Crawler, CrawlResult, canonical, same_brand, same_site
 from .dataset import DeletionDataset
 from .domains import normalize_domain, registrable_domain
 from .evidence import describe, is_login_url, page_text
@@ -38,6 +38,16 @@ SEARCH_QUERY_KEYS = {"q", "query", "s", "search", "k", "keyword", "keywords", "u
 FORUM_HINTS = ["/answers/", "/forum", "/community", "/communaute", "/questions/", "/topic",
                "/t/", "/discussions/"]
 FORUM_PENALTY = 0.30
+PRODUCT_HINTS = ["/dp/", "/gp/product", "/product", "/produit", "/p/", "/item", "/fiche",
+                 "/livre", "/book", "/shop/", "/boutique"]
+CRAWL_MEMO_SIZE = 500
+NOT_CONTACT_HINTS = ["/pulse/", "/posts/", "/groups/", "/in/", "/blog", "/news", "/actualite",
+                     "/article", "emploi", "/jobs", "/job/", "/career", "/carriere", "recrutement",
+                     "/q-", "/offre", "/forum", "/community", "/answers", "marketplace",
+                     "/seller", "/vendeur", "/partenaire", "/partner", "/learning", "/course",
+                     "/formation", "/cours", "/video", "/podcast", "/event"]
+MAX_CONTACT_SEGMENT_WORDS = 5
+MAX_CONTACT_DEPTH = 5
 UGC_SUBDOMAINS = {"form", "forms", "survey", "surveys", "community", "forum", "forums",
                   "answers", "blog", "blogs", "status", "careers", "jobs", "shop", "store"}
 TITLE_ONLY_PENALTY = 0.30
@@ -138,6 +148,25 @@ def path_has_words(url: str) -> bool:
     segments = [seg for seg in urlsplit(url).path.split("/") if seg]
     return any(re.search(r"[a-zA-Z]{3,}", seg) and not re.fullmatch(r"[0-9a-fA-F-]{8,}", seg)
                for seg in segments)
+
+
+def is_product_page(url: str) -> bool:
+    return has_any(urlsplit(url).path.lower(), PRODUCT_HINTS)
+
+
+def is_contact_page(url: str, title: str, domain: str) -> bool:
+    if not same_brand(url, domain) or is_search_page(url) or is_product_page(url):
+        return False
+    host_and_path = fold((urlsplit(url).hostname or "") + urlsplit(url).path)
+    if has_any(host_and_path, NOT_CONTACT_HINTS) or is_user_content_host(url, domain):
+        return False
+    segments = [seg for seg in urlsplit(url).path.split("/") if seg]
+    if len(segments) > MAX_CONTACT_DEPTH:
+        return False
+    if any(len(re.split(r"[-_]", seg)) > MAX_CONTACT_SEGMENT_WORDS for seg in segments):
+        return False
+    path = fold(urlsplit(url).path).replace("_", "-")
+    return has_any(path, PRIVACY) or (has_any(fold(title), PRIVACY) and has_any(path, ["legal", "privacy", "confidential", "donnees", "data"]))
 
 
 def is_forum(url: str) -> bool:
@@ -257,6 +286,16 @@ class LinkFinder:
         self.crawler = Crawler(fetcher)
         self.llm = llm
         self.search = search
+        self._crawls: dict[str, CrawlResult] = {}
+
+    async def _crawl(self, domain: str) -> CrawlResult:
+        if domain in self._crawls:
+            return self._crawls[domain]
+        result = await self.crawler.crawl(domain)
+        if len(self._crawls) >= CRAWL_MEMO_SIZE:
+            self._crawls.pop(next(iter(self._crawls)))
+        self._crawls[domain] = result
+        return result
 
     async def _search(self, domain: str, known: set[str]) -> tuple[list[Candidate], list[str]]:
         if self.search is None:
@@ -307,7 +346,7 @@ class LinkFinder:
                     and scored[0].probability >= STOP_IF_DATASET_ABOVE:
                 return self._result(domain, service, scored, emails, llm_used=False)
 
-        crawl = await self.crawler.crawl(domain)
+        crawl = await self._crawl(domain)
         emails += crawl.emails
         known = {s.candidate.url for s in scored}
         to_check_list = [c for c in crawl.candidates if c.url not in known][:VERIFY_LIMIT]
@@ -331,6 +370,27 @@ class LinkFinder:
                         s.probability = min(0.99, s.probability + LLM_BONUS * choice.confidence)
                         s.reasons.append(f"choisi par l'IA : {clean_reason(choice.reason)}")
         return self._result(domain, service, scored, emails, llm_used)
+
+    async def find_contact(self, domain_or_email: str,
+                           service: str | None = None) -> tuple[str | None, str | None]:
+        domain = normalize_domain(domain_or_email)
+        hit = self.dataset.lookup(domain, service)
+        if hit and hit.get("email"):
+            return hit["email"], None
+        crawl = await self._crawl(domain)
+        if crawl.emails:
+            return crawl.emails[0], None
+        page = crawl.privacy_url if crawl.privacy_url and is_contact_page(crawl.privacy_url, "", domain) \
+            else None
+        if self.search is not None:
+            links, email_hits = await self.search.for_domain(domain)
+            _, emails = await self._search(domain, set())
+            if emails:
+                return emails[0], None
+            if page is None:
+                page = next((r.url for r in email_hits + links
+                             if is_contact_page(r.url, r.title, domain)), None)
+        return None, page
 
     def _result(self, domain: str, service: str | None, scored: list[Scored],
                 emails: list[str], llm_used: bool) -> DeletionLink:

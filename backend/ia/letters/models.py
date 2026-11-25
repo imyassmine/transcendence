@@ -17,6 +17,7 @@ class LetterRequest(BaseModel):
     domain: str | None = None
     username: str | None = Field(None, max_length=100)
     recipient_email: str | None = Field(None, max_length=254)
+    contact_url: str | None = Field(None, max_length=2048)
 
     grounds: set[Ground] = {Ground.CONSENT_WITHDRAWN}
     oppose_marketing: bool = True
@@ -41,6 +42,7 @@ class Letter(BaseModel):
     subject: str
     body: str
     recipient_email: str | None
+    contact_url: str | None = None
     legal_refs: list[str]
     generated_by: Literal["llm", "template"]
     warnings: list[str] = []

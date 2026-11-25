@@ -85,9 +85,17 @@ def is_privacy_link(url: str, text: str) -> bool:
     return any(k in hay for k in PRIVACY)
 
 
+AT_RE = re.compile(r"\s*[\[\(\{]\s*(?:at|arobase|chez)\s*[\]\)\}]\s*", re.IGNORECASE)
+DOT_RE = re.compile(r"\s*[\[\(\{]\s*(?:dot|point)\s*[\]\)\}]\s*", re.IGNORECASE)
+
+
+def deobfuscate(text: str) -> str:
+    return DOT_RE.sub(".", AT_RE.sub("@", text))
+
+
 def find_privacy_emails(html: str, links: list[tuple[str, str]]) -> list[str]:
     found = [h[len("mailto:"):].split("?")[0] for h, _ in links if h.startswith("mailto:")]
-    found += EMAIL_RE.findall(html)
+    found += EMAIL_RE.findall(deobfuscate(html))
     out: list[str] = []
     for email in found:
         email = email.strip().lower()
