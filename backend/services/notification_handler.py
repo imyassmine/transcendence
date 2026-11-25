@@ -2,7 +2,7 @@ from typing import Sequence
 from uuid import UUID, uuid4
 
 from models import Notifications
-from schemas import NotificationEvent, NotificationType
+from schemas import NotificationEvent, NotificationReadStatus, NotificationType
 from sqlalchemy import func, select, update
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -72,20 +72,27 @@ async def create_notification_event_handler(
 
 
 async def list_notification_handler(
-    user_id: UUID, session: AsyncSession, limit: int = 20, offset: int = 0
+    user_id: UUID,
+    session: AsyncSession,
+    limit: int = 20,
+    offset: int = 0,
+    read_status: NotificationReadStatus = NotificationReadStatus.UNREAD,
 ) -> Sequence[Notifications]:
-    """List the user's unread notifications, newest first."""
     if not 1 <= limit <= 100:
         raise ValueError("limit must be between 1 and 100")
     if offset < 0:
         raise ValueError("offset must be non-negative")
 
+    query = select(Notifications).where(Notifications.user_id == user_id)
+    if read_status == NotificationReadStatus.READ:
+        query = query.where(Notifications.read_at.is_not(None))
+    elif read_status == NotificationReadStatus.UNREAD:
+        query = query.where(Notifications.read_at.is_(None))
+
     result = await session.scalars(
-        select(Notifications)
-        .where(
-            Notifications.user_id == user_id, Notifications.read_at.is_(None)
+        query.order_by(
+            Notifications.created_at.desc(), Notifications.id.desc()
         )
-        .order_by(Notifications.created_at.desc(), Notifications.id.desc())
         .limit(limit)
         .offset(offset)
     )

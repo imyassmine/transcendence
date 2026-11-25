@@ -152,6 +152,7 @@ activemq-data/
 # Environments
 .env
 .envrc
+/transcendence-local-ca.crt
 .venv
 env/
 venv/
