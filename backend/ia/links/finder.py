@@ -46,6 +46,10 @@ NOT_CONTACT_HINTS = ["/pulse/", "/posts/", "/groups/", "/in/", "/blog", "/news",
                      "/q-", "/offre", "/forum", "/community", "/answers", "marketplace",
                      "/seller", "/vendeur", "/partenaire", "/partner", "/learning", "/course",
                      "/formation", "/cours", "/video", "/podcast", "/event"]
+EDITORIAL_HINTS = ["career-advice", "/advice", "/conseils", "/magazine", "/mag/", "/le-mag",
+                   "/guides/", "/guide/", "/blog", "/news", "/actualite", "/resources/",
+                   "/insights", "/tips", "/astuces"]
+EDITORIAL_PENALTY = 0.40
 MAX_CONTACT_SEGMENT_WORDS = 5
 MAX_CONTACT_DEPTH = 5
 UGC_SUBDOMAINS = {"form", "forms", "survey", "surveys", "community", "forum", "forums",
@@ -260,6 +264,9 @@ def score(c: Candidate, chk: Check, domain: str) -> Scored | None:
     if is_forum(chk.final_url):
         p -= FORUM_PENALTY
         reasons.append("forum / réponse communautaire")
+    if has_any(urlsplit(chk.final_url).path.lower(), EDITORIAL_HINTS):
+        p -= EDITORIAL_PENALTY
+        reasons.append("article éditorial, pas une page officielle")
     if chk.blocked:
         p -= BLOCKED_PENALTY
         reasons.append(f"non vérifiable (HTTP {chk.status})")
@@ -317,10 +324,17 @@ class LinkFinder:
         return ranked, emails
 
     async def _verify(self, cands: list[Candidate], domain: str) -> list[Scored]:
-        pages = await asyncio.gather(*(self.fetcher.get(c.url) for c in cands))
+        pages = list(await asyncio.gather(*(self.fetcher.get(c.url) for c in cands)))
+        retry = [i for i, page in enumerate(pages) if page is None]
+        if retry:
+            again = await asyncio.gather(*(self.fetcher.get(cands[i].url) for i in retry))
+            for i, page in zip(retry, again):
+                pages[i] = page
         out = []
         for c, page in zip(cands, pages):
             chk = to_check(c.url, page)
+            if page is None and "dataset" in c.origins:
+                chk.blocked = True
             if page is not None:
                 c.excerpt = describe(c.url, page.url, page.status, page.text)
             if s := score(c, chk, domain):

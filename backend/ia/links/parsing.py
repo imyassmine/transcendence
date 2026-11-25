@@ -6,7 +6,8 @@ from urllib.parse import urljoin, urlsplit
 STRONG = ["delete", "deletion", "supprim", "suppression", "close-account", "close account",
           "close your account", "close-your-account", "closing your account",
           "closing-your-account", "closeaccount", "fermer mon compte", "fermer le compte",
-          "fermer votre compte", "fermer ton compte", "fermeture du compte", "fermeture de compte",
+          "fermer votre compte", "fermer ton compte", "fermer un compte",
+          "fermeture d'un compte", "close an account", "close my account", "fermeture du compte", "fermeture de compte",
           "fermeture de votre compte", "cloturer", "desactiv", "deactivat", "erase", "effacement",
           "remove account", "account-removal", "data-deletion", "loschen"]
 ACCOUNT = ["account", "compte", "profile", "profil", "settings", "parametres", "my-data"]
