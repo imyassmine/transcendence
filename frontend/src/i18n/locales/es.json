@@ -1,0 +1,126 @@
+{
+  "app": {
+    "name": "Transcendence",
+    "tagline": "Encuentra y borra tus datos en internet."
+  },
+  "nav": {
+    "label": "Menú principal",
+    "dossier": "Expediente",
+    "notifications": "Notificaciones",
+    "apiKeys": "Claves API",
+    "logout": "Cerrar sesión",
+    "search": "Buscar…",
+    "searchLabel": "Buscar una página",
+    "noResults": "Sin resultados",
+    "collapse": "Plegar la barra lateral",
+    "expand": "Desplegar la barra lateral",
+    "openMenu": "Abrir el menú",
+    "closeMenu": "Cerrar el menú",
+    "shortcut": "Atajo: {{key}}"
+  },
+  "theme": {
+    "toLight": "Cambiar al tema claro",
+    "toDark": "Cambiar al tema oscuro",
+    "light": "Claro",
+    "dark": "Oscuro"
+  },
+  "language": {
+    "label": "Idioma"
+  },
+  "home": {
+    "title_one": "Tus datos están en manos de {{count}} organización.",
+    "title_other": "Tus datos están en manos de {{count}} organizaciones.",
+    "subtitle_one": "{{count}} solicitud de supresión en curso.",
+    "subtitle_other": "{{count}} solicitudes de supresión en curso.",
+    "columns": {
+      "n": "N.º",
+      "organisation": "Organización",
+      "type": "Tipo",
+      "risk": "Riesgo",
+      "state": "Estado"
+    },
+    "types": {
+      "broker": "corredor",
+      "search": "búsqueda",
+      "social": "red social"
+    },
+    "start": "Iniciar",
+    "startLabel": "Iniciar la solicitud de supresión para {{site}}",
+    "daysLeft": "D-{{count}}",
+    "daysLeftLabel_one": "Queda {{count}} día antes del plazo legal",
+    "daysLeftLabel_other": "Quedan {{count}} días antes del plazo legal",
+    "erased": "Borrado"
+  },
+  "auth": {
+    "login": {
+      "title": "Iniciar sesión",
+      "submit": "Entrar",
+      "submitting": "Entrando…",
+      "noAccount": "¿Aún no tienes cuenta?",
+      "signupLink": "Regístrate"
+    },
+    "signup": {
+      "title": "Registro",
+      "subtitle": "Descubre dónde están tus datos y haz que desaparezcan.",
+      "submit": "Crear mi cuenta",
+      "submitting": "Creando tu cuenta…",
+      "hasAccount": "¿Ya tienes cuenta?",
+      "loginLink": "Iniciar sesión"
+    },
+    "fields": {
+      "name": "Nombre",
+      "email": "Email",
+      "password": "Contraseña"
+    },
+    "errors": {
+      "required": "Obligatorio",
+      "email": "Email no válido",
+      "password": "La contraseña no cumple las reglas",
+      "tooLong": "50 caracteres como máximo",
+      "invalidCredentials": "Email o contraseña incorrectos.",
+      "emailTaken": "Ya existe una cuenta con este email.",
+      "invalidInput": "Algunos campos no son válidos.",
+      "network": "No se puede conectar con el servidor. Revisa tu conexión.",
+      "unknown": "Algo ha fallado. Inténtalo de nuevo."
+    },
+    "rules": {
+      "title": "Reglas de la contraseña",
+      "length": "De 8 a 128 caracteres",
+      "upper": "1 mayúscula",
+      "lower": "1 minúscula",
+      "digit": "1 cifra",
+      "special": "1 carácter especial"
+    }
+  },
+  "apiKeys": {
+    "title": "Claves API",
+    "subtitle": "Una clave te permite acceder a tus datos desde tus propios scripts, mediante la API pública.",
+    "demo": "Datos de demostración: aún no conectados a la API.",
+    "create": {
+      "title": "Nueva clave",
+      "nameLabel": "Nombre de la clave",
+      "namePlaceholder": "mi-script",
+      "submit": "Crear clave"
+    },
+    "newKey": {
+      "title": "Tu nueva clave",
+      "warning": "Cópiala ahora: no se volverá a mostrar.",
+      "copy": "Copiar",
+      "copied": "Copiada",
+      "done": "Hecho"
+    },
+    "list": {
+      "title": "Claves activas",
+      "empty": "Todavía no hay ninguna clave API.",
+      "name": "Nombre",
+      "key": "Clave",
+      "created": "Creada",
+      "lastUsed": "Último uso",
+      "never": "Nunca",
+      "revoke": "Revocar",
+      "revokeLabel": "Revocar la clave {{name}}",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar"
+    }
+  }
+}

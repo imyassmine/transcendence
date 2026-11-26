@@ -1,0 +1,126 @@
+{
+  "app": {
+    "name": "Transcendence",
+    "tagline": "Trouvez et effacez vos données en ligne."
+  },
+  "nav": {
+    "label": "Menu principal",
+    "dossier": "Dossier",
+    "notifications": "Notifications",
+    "apiKeys": "Clés API",
+    "logout": "Se déconnecter",
+    "search": "Rechercher…",
+    "searchLabel": "Rechercher une page",
+    "noResults": "Aucun résultat",
+    "collapse": "Replier la barre latérale",
+    "expand": "Déplier la barre latérale",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "shortcut": "Raccourci : {{key}}"
+  },
+  "theme": {
+    "toLight": "Passer au thème clair",
+    "toDark": "Passer au thème sombre",
+    "light": "Clair",
+    "dark": "Sombre"
+  },
+  "language": {
+    "label": "Langue"
+  },
+  "home": {
+    "title_one": "Vos données sont détenues par {{count}} organisme.",
+    "title_other": "Vos données sont détenues par {{count}} organismes.",
+    "subtitle_one": "{{count}} demande d'effacement en cours.",
+    "subtitle_other": "{{count}} demandes d'effacement en cours.",
+    "columns": {
+      "n": "N°",
+      "organisation": "Organisme",
+      "type": "Type",
+      "risk": "Risque",
+      "state": "État"
+    },
+    "types": {
+      "broker": "courtier",
+      "search": "recherche",
+      "social": "réseau social"
+    },
+    "start": "Lancer",
+    "startLabel": "Lancer la demande d'effacement pour {{site}}",
+    "daysLeft": "J-{{count}}",
+    "daysLeftLabel_one": "{{count}} jour restant avant le délai légal",
+    "daysLeftLabel_other": "{{count}} jours restants avant le délai légal",
+    "erased": "Effacé"
+  },
+  "auth": {
+    "login": {
+      "title": "Connexion",
+      "submit": "Se connecter",
+      "submitting": "Connexion…",
+      "noAccount": "Pas encore de compte ?",
+      "signupLink": "S'inscrire"
+    },
+    "signup": {
+      "title": "Inscription",
+      "subtitle": "Découvrez où sont vos données, puis faites-les disparaître.",
+      "submit": "Créer mon compte",
+      "submitting": "Création du compte…",
+      "hasAccount": "Déjà un compte ?",
+      "loginLink": "Se connecter"
+    },
+    "fields": {
+      "name": "Nom",
+      "email": "Email",
+      "password": "Mot de passe"
+    },
+    "errors": {
+      "required": "Obligatoire",
+      "email": "Email invalide",
+      "password": "Le mot de passe ne respecte pas les règles",
+      "tooLong": "50 caractères maximum",
+      "invalidCredentials": "Email ou mot de passe incorrect.",
+      "emailTaken": "Un compte existe déjà avec cet email.",
+      "invalidInput": "Certains champs ne sont pas valides.",
+      "network": "Impossible de joindre le serveur. Vérifiez votre connexion.",
+      "unknown": "Une erreur est survenue. Réessayez."
+    },
+    "rules": {
+      "title": "Règles du mot de passe",
+      "length": "8 à 128 caractères",
+      "upper": "1 majuscule",
+      "lower": "1 minuscule",
+      "digit": "1 chiffre",
+      "special": "1 caractère spécial"
+    }
+  },
+  "apiKeys": {
+    "title": "Clés API",
+    "subtitle": "Une clé permet d'accéder à vos données depuis vos propres scripts, via l'API publique.",
+    "demo": "Données de démonstration : pas encore reliées à l'API.",
+    "create": {
+      "title": "Nouvelle clé",
+      "nameLabel": "Nom de la clé",
+      "namePlaceholder": "mon-script",
+      "submit": "Créer la clé"
+    },
+    "newKey": {
+      "title": "Votre nouvelle clé",
+      "warning": "Copiez-la maintenant : elle ne sera plus jamais affichée.",
+      "copy": "Copier",
+      "copied": "Copiée",
+      "done": "Terminé"
+    },
+    "list": {
+      "title": "Clés actives",
+      "empty": "Aucune clé API pour l'instant.",
+      "name": "Nom",
+      "key": "Clé",
+      "created": "Créée le",
+      "lastUsed": "Dernière utilisation",
+      "never": "Jamais",
+      "revoke": "Révoquer",
+      "revokeLabel": "Révoquer la clé {{name}}",
+      "confirm": "Confirmer",
+      "cancel": "Annuler"
+    }
+  }
+}

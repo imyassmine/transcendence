@@ -1,0 +1,126 @@
+{
+  "app": {
+    "name": "Transcendence",
+    "tagline": "Find and erase your data online."
+  },
+  "nav": {
+    "label": "Main menu",
+    "dossier": "Dossier",
+    "notifications": "Notifications",
+    "apiKeys": "API keys",
+    "logout": "Log out",
+    "search": "Search…",
+    "searchLabel": "Search pages",
+    "noResults": "No results",
+    "collapse": "Collapse sidebar",
+    "expand": "Expand sidebar",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "shortcut": "Shortcut: {{key}}"
+  },
+  "theme": {
+    "toLight": "Switch to light theme",
+    "toDark": "Switch to dark theme",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "language": {
+    "label": "Language"
+  },
+  "home": {
+    "title_one": "Your data is held by {{count}} organisation.",
+    "title_other": "Your data is held by {{count}} organisations.",
+    "subtitle_one": "{{count}} erasure request in progress.",
+    "subtitle_other": "{{count}} erasure requests in progress.",
+    "columns": {
+      "n": "N°",
+      "organisation": "Organisation",
+      "type": "Type",
+      "risk": "Risk",
+      "state": "State"
+    },
+    "types": {
+      "broker": "broker",
+      "search": "search",
+      "social": "social"
+    },
+    "start": "Start",
+    "startLabel": "Start the erasure request for {{site}}",
+    "daysLeft": "D-{{count}}",
+    "daysLeftLabel_one": "{{count}} day left before the legal deadline",
+    "daysLeftLabel_other": "{{count}} days left before the legal deadline",
+    "erased": "Erased"
+  },
+  "auth": {
+    "login": {
+      "title": "Log in",
+      "submit": "Log in",
+      "submitting": "Logging in…",
+      "noAccount": "No account yet?",
+      "signupLink": "Sign up"
+    },
+    "signup": {
+      "title": "Sign up",
+      "subtitle": "See where your data is, then make it disappear.",
+      "submit": "Create my account",
+      "submitting": "Creating your account…",
+      "hasAccount": "Already have an account?",
+      "loginLink": "Log in"
+    },
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "password": "Password"
+    },
+    "errors": {
+      "required": "Required",
+      "email": "Not a valid email",
+      "password": "The password does not follow the rules",
+      "tooLong": "50 characters maximum",
+      "invalidCredentials": "Wrong email or password.",
+      "emailTaken": "An account already exists with this email.",
+      "invalidInput": "Some fields are not valid.",
+      "network": "Cannot reach the server. Check your connection.",
+      "unknown": "Something went wrong. Try again."
+    },
+    "rules": {
+      "title": "Password rules",
+      "length": "8 to 128 characters",
+      "upper": "1 uppercase letter",
+      "lower": "1 lowercase letter",
+      "digit": "1 digit",
+      "special": "1 special character"
+    }
+  },
+  "apiKeys": {
+    "title": "API keys",
+    "subtitle": "Use a key to access your data from your own scripts, through the public API.",
+    "demo": "Demo data: not connected to the API yet.",
+    "create": {
+      "title": "New key",
+      "nameLabel": "Key name",
+      "namePlaceholder": "my-script",
+      "submit": "Create key"
+    },
+    "newKey": {
+      "title": "Your new key",
+      "warning": "Copy it now: it will never be shown again.",
+      "copy": "Copy",
+      "copied": "Copied",
+      "done": "Done"
+    },
+    "list": {
+      "title": "Active keys",
+      "empty": "No API key yet.",
+      "name": "Name",
+      "key": "Key",
+      "created": "Created",
+      "lastUsed": "Last used",
+      "never": "Never",
+      "revoke": "Revoke",
+      "revokeLabel": "Revoke the key {{name}}",
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    }
+  }
+}
