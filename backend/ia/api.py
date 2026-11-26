@@ -8,6 +8,7 @@ from datetime import timedelta
 from pathlib import Path
 from typing import Any
 
+from core.config import get_config
 from db import get_db
 from fastapi import APIRouter, Depends, FastAPI, HTTPException, Query, Request
 from fastapi.responses import StreamingResponse
@@ -20,7 +21,7 @@ from .letters import Letter, LetterGenerator, LetterRequest
 from .links.dataset import DeletionDataset
 from .links.domains import _extract, normalize_domain
 from .links.fetcher import SafeFetcher
-from .links.finder import DeletionLink, LinkFinder
+from .links.finder import LinkFinder
 from .links.search import SearxClient
 from .llm import OllamaClient
 from .ratelimit import RateLimiter
@@ -30,7 +31,7 @@ DATASET = Path(__file__).resolve().parent / "links" / "data" / "jdm_sites.json"
 LINK_RATE_PER_MIN = int(os.getenv("IA_LINK_RATE_PER_MIN", "60"))
 LETTER_RATE_PER_MIN = int(os.getenv("IA_LETTER_RATE_PER_MIN", "10"))
 MAX_PARALLEL_FINDS = int(os.getenv("IA_MAX_PARALLEL_FINDS", "3"))
-LINK_CACHE_MAX_AGE = timedelta(days=float(os.getenv("IA_LINK_CACHE_TTL_DAYS", "30")))
+LINK_CACHE_MAX_AGE = timedelta(days=get_config().IA_LINK_CACHE_TTL_DAYS)
 
 
 class KeyedLocks:
@@ -62,7 +63,9 @@ class IAServices:
     semaphore: asyncio.Semaphore
 
 
-def build_services(finder: LinkFinder, generator: LetterGenerator) -> IAServices:
+def build_services(
+    finder: LinkFinder, generator: LetterGenerator
+) -> IAServices:
     return IAServices(
         finder=finder,
         generator=generator,
@@ -76,7 +79,9 @@ def build_services(finder: LinkFinder, generator: LetterGenerator) -> IAServices
 @asynccontextmanager
 async def ia_lifespan(app: FastAPI) -> AsyncIterator[None]:
     fetcher, llm, search = SafeFetcher(), OllamaClient(), SearxClient()
-    finder = LinkFinder(DeletionDataset.from_file(DATASET), fetcher, llm, search)
+    finder = LinkFinder(
+        DeletionDataset.from_file(DATASET), fetcher, llm, search
+    )
     app.state.ia = build_services(finder, LetterGenerator(llm))
     try:
         yield
@@ -96,8 +101,11 @@ def get_user_key(user: Users = Depends(get_current_user)) -> str:
 
 def check_rate(limiter: RateLimiter, key: str) -> None:
     if not limiter.allow(key):
-        raise HTTPException(429, "trop de requêtes, réessaie plus tard",
-                            headers={"Retry-After": str(limiter.retry_after(key))})
+        raise HTTPException(
+            429,
+            "trop de requêtes, réessaie plus tard",
+            headers={"Retry-After": str(limiter.retry_after(key))},
+        )
 
 
 def domain_or_422(account: str) -> str:
@@ -113,14 +121,17 @@ def sse(event: dict[str, Any]) -> str:
     return f"event: {event['type']}\ndata: {data}\n\n"
 
 
-async def find_recipient(ia: IAServices, session: AsyncSession, domain: str,
-                         service: str | None) -> tuple[str | None, str | None]:
+async def find_recipient(
+    ia: IAServices, session: AsyncSession, domain: str, service: str | None
+) -> tuple[str | None, str | None]:
     contact = await repository.get_contact(session, domain, LINK_CACHE_MAX_AGE)
     if contact is not None:
         return contact
     await session.rollback()
     async with ia.locks.hold(f"contact:{domain}"):
-        contact = await repository.get_contact(session, domain, LINK_CACHE_MAX_AGE)
+        contact = await repository.get_contact(
+            session, domain, LINK_CACHE_MAX_AGE
+        )
         if contact is not None:
             return contact
         await session.rollback()
@@ -131,25 +142,41 @@ async def find_recipient(ia: IAServices, session: AsyncSession, domain: str,
     return contact
 
 
-router = APIRouter(prefix="/ia", tags=["ia"])
+router = APIRouter(prefix="/api/v1/ia", tags=["ia"])
 
 
 @router.get("/link")
-async def get_link(account: str = Query(min_length=3, max_length=254),
-                   service: str | None = Query(None, max_length=100),
-                   refresh: bool = False,
-                   ia: IAServices = Depends(get_services),
-                   session: AsyncSession = Depends(get_db),
-                   user: str = Depends(get_user_key)) -> dict[str, Any]:
+async def get_link(
+    account: str = Query(min_length=3, max_length=254),
+    service: str | None = Query(None, max_length=100),
+    refresh: bool = False,
+    ia: IAServices = Depends(get_services),
+    session: AsyncSession = Depends(get_db),
+    user: str = Depends(get_user_key),
+) -> dict[str, Any]:
     domain = domain_or_422(account)
-    if not refresh and (cached := await repository.get_link(
-            session, domain, LINK_CACHE_MAX_AGE)) is not None:
+    if (
+        not refresh
+        and (
+            cached := await repository.get_link(
+                session, domain, LINK_CACHE_MAX_AGE
+            )
+        )
+        is not None
+    ):
         return asdict(cached) | {"cached": True}
     check_rate(ia.link_limiter, user)
     await session.rollback()
     async with ia.locks.hold(f"link:{domain}"):
-        if not refresh and (cached := await repository.get_link(
-                session, domain, LINK_CACHE_MAX_AGE)) is not None:
+        if (
+            not refresh
+            and (
+                cached := await repository.get_link(
+                    session, domain, LINK_CACHE_MAX_AGE
+                )
+            )
+            is not None
+        ):
             return asdict(cached) | {"cached": True}
         await session.rollback()
         async with ia.semaphore:
@@ -160,15 +187,24 @@ async def get_link(account: str = Query(min_length=3, max_length=254),
 
 
 @router.post("/letter", response_model=None)
-async def post_letter(req: LetterRequest, stream: bool = True,
-                      ia: IAServices = Depends(get_services),
-                      session: AsyncSession = Depends(get_db),
-                      user: str = Depends(get_user_key)) -> Letter | StreamingResponse:
+async def post_letter(
+    req: LetterRequest,
+    stream: bool = True,
+    ia: IAServices = Depends(get_services),
+    session: AsyncSession = Depends(get_db),
+    user: str = Depends(get_user_key),
+) -> Letter | StreamingResponse:
     check_rate(ia.letter_limiter, user)
     if req.recipient_email is None and req.domain:
-        email, page = await find_recipient(ia, session, normalize_domain(req.domain), req.service_name)
-        req = req.model_copy(update={"recipient_email": email,
-                                     "contact_url": req.contact_url or page})
+        email, page = await find_recipient(
+            ia, session, normalize_domain(req.domain), req.service_name
+        )
+        req = req.model_copy(
+            update={
+                "recipient_email": email,
+                "contact_url": req.contact_url or page,
+            }
+        )
     if not stream:
         return await ia.generator.generate(req)
 
@@ -176,5 +212,8 @@ async def post_letter(req: LetterRequest, stream: bool = True,
         async for event in ia.generator.stream(req):
             yield sse(event)
 
-    return StreamingResponse(events(), media_type="text/event-stream",
-                             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
+    return StreamingResponse(
+        events(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
