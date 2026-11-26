@@ -106,6 +106,38 @@
     "erasedOn": "erased on {{date}}",
     "empty": "Nothing here."
   },
+  "notifications": {
+    "tabs": {
+      "unread": "Unread",
+      "read": "Read"
+    },
+    "unreadCount_one": "{{count}} unread notification",
+    "unreadCount_other": "{{count}} unread notifications",
+    "loading": "Loading notifications…",
+    "signedOut": "Log in to view your notifications.",
+    "loadError": "Could not load notifications.",
+    "retry": "Try again",
+    "empty": {
+      "unread": "No unread notifications.",
+      "read": "No read notifications."
+    },
+    "selectedCount_one": "{{count}} notification selected",
+    "selectedCount_other": "{{count}} notifications selected",
+    "selectAll": "Select all",
+    "selectAllLabel": "Select all unread notifications on this page",
+    "clearSelection": "Clear selection",
+    "selectLabel": "Select {{title}}",
+    "markRead": "Mark as read",
+    "markReadLabel": "Mark {{title}} as read",
+    "markSelected": "Mark selected as read",
+    "saving": "Marking as read…",
+    "saveError": "Could not mark notifications as read. Try again.",
+    "pagination": {
+      "label": "Notifications pagination",
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
   "letter": {
     "title": "GDPR erasure request",
     "demo": "Demo letter: the AI generator is not connected yet.",

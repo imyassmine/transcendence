@@ -106,6 +106,38 @@
     "erasedOn": "effacé le {{date}}",
     "empty": "Rien ici."
   },
+  "notifications": {
+    "tabs": {
+      "unread": "Non lues",
+      "read": "Lues"
+    },
+    "unreadCount_one": "{{count}} notification non lue",
+    "unreadCount_other": "{{count}} notifications non lues",
+    "loading": "Chargement des notifications…",
+    "signedOut": "Connectez-vous pour consulter vos notifications.",
+    "loadError": "Impossible de charger les notifications.",
+    "retry": "Réessayer",
+    "empty": {
+      "unread": "Aucune notification non lue.",
+      "read": "Aucune notification lue."
+    },
+    "selectedCount_one": "{{count}} notification sélectionnée",
+    "selectedCount_other": "{{count}} notifications sélectionnées",
+    "selectAll": "Tout sélectionner",
+    "selectAllLabel": "Sélectionner toutes les notifications non lues de cette page",
+    "clearSelection": "Annuler la sélection",
+    "selectLabel": "Sélectionner « {{title}} »",
+    "markRead": "Marquer comme lue",
+    "markReadLabel": "Marquer « {{title}} » comme lue",
+    "markSelected": "Marquer la sélection comme lue",
+    "saving": "Marquage comme lues…",
+    "saveError": "Impossible de marquer les notifications comme lues. Réessayez.",
+    "pagination": {
+      "label": "Pagination des notifications",
+      "previous": "Précédent",
+      "next": "Suivant"
+    }
+  },
   "letter": {
     "title": "Demande d'effacement RGPD",
     "demo": "Lettre de démonstration : le générateur IA n'est pas encore branché.",
