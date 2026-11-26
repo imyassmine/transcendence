@@ -23,18 +23,14 @@ def verify_password(hash: str, password: str) -> bool:
 
 def create_access_token(user_id: UUID) -> str:
     config = get_config()
-    expire = datetime.now(timezone.utc) + timedelta(
-        minutes=config.JWT_EXPIRE_MINUTES
-    )
+    expire = datetime.now(timezone.utc) + timedelta(minutes=config.JWT_EXPIRE_MINUTES)
     payload = {"sub": str(user_id), "exp": expire}
     return jwt.encode(payload, config.JWT_SECRET, algorithm=ALGORITHM)
 
 
 def decode_access_token(token: str) -> UUID | None:
     try:
-        payload = jwt.decode(
-            token, get_config().JWT_SECRET, algorithms=[ALGORITHM]
-        )
+        payload = jwt.decode(token, get_config().JWT_SECRET, algorithms=[ALGORITHM])
         return UUID(payload["sub"])
     except (jwt.PyJWTError, KeyError, ValueError):
         return None

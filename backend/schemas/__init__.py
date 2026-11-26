@@ -4,4 +4,4 @@ from .notifications import (
     NotificationReadStatus,
     NotificationType,
 )
-from .users import User
+from .users import User, RegisterRequest, LoginRequest

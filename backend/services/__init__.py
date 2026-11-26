@@ -5,4 +5,4 @@ from .notification_handler import (
     mark_batch_notifications_read_handler,
     mark_notification_read_handler,
 )
-from .user_handler import get_current_user
+from .user_handler import get_current_user, register_user, authenticate_user
