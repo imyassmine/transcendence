@@ -4,6 +4,12 @@ from uuid import UUID
 from pydantic import AwareDatetime, BaseModel, Field, JsonValue
 
 
+class NotificationReadStatus(StrEnum):
+    UNREAD = auto()
+    READ = auto()
+    ALL = auto()
+
+
 class EventType(StrEnum):
     ACCOUNT = auto()
     SCAN = auto()
@@ -17,11 +23,10 @@ class NotificationType(StrEnum):
     SCAN_COMPLETED = "scan.completed"
     SCAN_FAILED = "scan.failed"
     DRAFT_CREATED = "draft.created"
+    DRAFT_SENT = "draft.sent"
 
 
 class NotificationEvent(BaseModel):
-    """Internal event with metadata supplied by the backend producer."""
-
     event_id: UUID
     user_id: UUID
     type: NotificationType

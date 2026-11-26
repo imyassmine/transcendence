@@ -7,9 +7,11 @@ ENV_PATH = Path(__file__).resolve().parents[1]
 
 
 class Config(BaseSettings):
-    DB_URL: str
-
     model_config = SettingsConfigDict(env_file=ENV_PATH / ".env")
+
+    DB_URL: str
+    JWT_SECRET: str
+    JWT_EXPIRE_MINUTES: int = 30
 
 
 @lru_cache
