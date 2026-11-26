@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom'
 import { Button } from '../components/ui/Button'
 import { SectionTitle } from '../components/ui/PageHeader'
 import { DeadlineBar, StatusTag } from '../components/ui/StatusTag'
-import { mockLetter, type Letter } from '../data/letters'
+import { letterLanguage, mockLetter, type Letter } from '../data/letters'
 import { findOrganisation } from '../data/organisations'
 import { MOCK_USER } from '../data/user'
 import { addDays, formatDate, LEGAL_DELAY_DAYS } from '../utils/dates'
@@ -22,11 +22,13 @@ export function RequestPage() {
     org && org.state.kind !== 'todo' ? org.state.sentAt : null,
   )
 
+  const lang = letterLanguage(i18n.resolvedLanguage)
+
   useEffect(() => {
     if (!org) return
-    const timer = setTimeout(() => setLetter(mockLetter(org, MOCK_USER.name, MOCK_USER.email)), 600)
+    const timer = setTimeout(() => setLetter(mockLetter(org, MOCK_USER.name, MOCK_USER.email, lang)), 600)
     return () => clearTimeout(timer)
-  }, [org])
+  }, [org, lang])
 
   if (!org) return <NotFoundPage />
 
@@ -36,7 +38,7 @@ export function RequestPage() {
   async function copyLetter() {
     if (!letter) return
     try {
-      await navigator.clipboard.writeText(`${letter.subject}\n\n${letter.body}`)
+      await navigator.clipboard.writeText(letter.body)
       setCopied(true)
     } catch {
       setCopied(false)

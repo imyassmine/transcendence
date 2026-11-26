@@ -2,12 +2,14 @@ import { Route, Routes } from 'react-router-dom'
 
 import { AuthLayout } from './components/layout/AuthLayout'
 import { Layout } from './components/layout/Layout'
+import { ApiKeysPage } from './pages/ApiKeysPage'
 import { HomePage } from './pages/HomePage'
 import { LegalPage } from './pages/LegalPage'
 import { LoginPage } from './pages/LoginPage'
 import { NotFoundPage } from './pages/NotFoundPage'
 import { NotificationsPage } from './pages/NotificationsPage'
 import { OrganisationPage } from './pages/OrganisationPage'
+import { ProfilePage } from './pages/ProfilePage'
 import { RequestPage } from './pages/RequestPage'
 import { RequestsPage } from './pages/RequestsPage'
 import { SignupPage } from './pages/SignupPage'
@@ -32,6 +34,8 @@ export default function App() {
         <Route path="/requests" element={<RequestsPage />} />
         <Route path="/requests/:id" element={<RequestPage />} />
         <Route path="/notifications" element={<NotificationsPage />} />
+        <Route path="/api-keys" element={<ApiKeysPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Route>
     </Routes>
   )
