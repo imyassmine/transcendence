@@ -1,0 +1,295 @@
+{
+  "app": {
+    "name": "Transcendence",
+    "tagline": "Find and erase your data online."
+  },
+  "nav": {
+    "label": "Main menu",
+    "dossier": "Dossier",
+    "notifications": "Notifications",
+    "apiKeys": "API keys",
+    "logout": "Log out",
+    "search": "Search…",
+    "searchLabel": "Search pages",
+    "noResults": "No results",
+    "collapse": "Collapse sidebar",
+    "expand": "Expand sidebar",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "shortcut": "Shortcut: {{key}}",
+    "orbit": "Orbit",
+    "requests": "Erasure requests",
+    "profile": "Profile",
+    "privacy": "Privacy",
+    "terms": "Terms"
+  },
+  "theme": {
+    "toLight": "Switch to light theme",
+    "toDark": "Switch to dark theme",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "language": {
+    "label": "Language"
+  },
+  "types": {
+    "broker": "data broker",
+    "search": "people search",
+    "social": "social network",
+    "breach": "data breach"
+  },
+  "dataKinds": {
+    "name": "Full name",
+    "email": "Email address",
+    "phone": "Phone number",
+    "address": "Postal address",
+    "birthdate": "Date of birth",
+    "photo": "Photos",
+    "password": "Password (leaked)"
+  },
+  "risk": {
+    "high": "High risk",
+    "medium": "Medium risk",
+    "low": "Low risk"
+  },
+  "status": {
+    "todo": "To do",
+    "daysLeft": "D-{{count}}",
+    "daysLeftLabel_one": "{{count}} day left before the legal deadline",
+    "daysLeftLabel_other": "{{count}} days left before the legal deadline",
+    "overdue": "Deadline passed",
+    "erased": "Erased"
+  },
+  "home": {
+    "title_one": "Your data is held by {{count}} organisation.",
+    "title_other": "Your data is held by {{count}} organisations.",
+    "subtitle_one": "{{count}} erasure request in progress.",
+    "subtitle_other": "{{count}} erasure requests in progress.",
+    "columns": {
+      "n": "N°",
+      "organisation": "Organisation",
+      "type": "Type",
+      "risk": "Risk",
+      "state": "State"
+    },
+    "start": "Start",
+    "startLabel": "Start the erasure request for {{site}}"
+  },
+  "organisation": {
+    "risk": "Risk score",
+    "status": "Status",
+    "dataFound_one": "{{count}} piece of data found",
+    "dataFound_other": "{{count}} pieces of data found",
+    "erasure": "Erasure",
+    "todoText": "No request sent yet. Once sent, the organisation has {{days}} days to answer (GDPR, art. 12).",
+    "start": "Start the erasure request",
+    "pendingText": "Request sent on {{sent}}. Legal deadline: {{deadline}}.",
+    "viewRequest": "View the request",
+    "erasedText": "Your data was erased on {{date}}."
+  },
+  "requests": {
+    "title": "Erasure requests",
+    "subtitle": "Each organisation has {{days}} days to answer a GDPR erasure request.",
+    "summary": "{{pending}} in progress · {{todo}} to start · {{erased}} erased",
+    "sections": {
+      "pending": "In progress",
+      "todo": "To start",
+      "erased": "Erased"
+    },
+    "columns": {
+      "organisation": "Organisation",
+      "sent": "Sent",
+      "deadline": "Deadline",
+      "progress": "Progress",
+      "risk": "Risk"
+    },
+    "erasedOn": "erased on {{date}}",
+    "empty": "Nothing here."
+  },
+  "letter": {
+    "title": "GDPR erasure request",
+    "demo": "Demo letter: the AI generator is not connected yet.",
+    "generating": "Writing the letter…",
+    "draft": "Letter",
+    "to": "To",
+    "contactPage": "Page",
+    "subject": "Subject",
+    "generatedBy": {
+      "llm": "written by the AI",
+      "template": "legal template"
+    },
+    "copy": "Copy the letter",
+    "copied": "Copied",
+    "mail": "Open in my email app",
+    "markSent": "Mark as sent",
+    "sent": "Sent on {{date}}",
+    "deadline": "legal deadline: {{date}}"
+  },
+  "orbit": {
+    "title": "Orbit",
+    "subtitle": "You are in the centre. The closer an organisation, the riskier. The ring around a point counts the 30 days of the legal deadline.",
+    "you": "You",
+    "legendPending": "Request sent",
+    "list": "All organisations",
+    "nodeLabel": "{{site}}, risk {{risk}}, {{status}}"
+  },
+  "auth": {
+    "login": {
+      "title": "Log in",
+      "submit": "Log in",
+      "submitting": "Logging in…",
+      "noAccount": "No account yet?",
+      "signupLink": "Sign up"
+    },
+    "signup": {
+      "title": "Sign up",
+      "subtitle": "See where your data is, then make it disappear.",
+      "submit": "Create my account",
+      "submitting": "Creating your account…",
+      "hasAccount": "Already have an account?",
+      "loginLink": "Log in",
+      "accept": "By creating an account, you accept the <terms>Terms of service</terms> and the <privacy>Privacy policy</privacy>."
+    },
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "password": "Password"
+    },
+    "errors": {
+      "required": "Required",
+      "email": "Not a valid email",
+      "password": "The password does not follow the rules",
+      "tooLong": "50 characters maximum",
+      "invalidCredentials": "Wrong email or password.",
+      "emailTaken": "An account already exists with this email.",
+      "invalidInput": "Some fields are not valid.",
+      "network": "Cannot reach the server. Check your connection.",
+      "unknown": "Something went wrong. Try again."
+    },
+    "rules": {
+      "title": "Password rules",
+      "length": "8 to 128 characters",
+      "upper": "1 uppercase letter",
+      "lower": "1 lowercase letter",
+      "digit": "1 digit",
+      "special": "1 special character"
+    }
+  },
+  "apiKeys": {
+    "title": "API keys",
+    "subtitle": "Use a key to access your data from your own scripts, through the public API.",
+    "demo": "Demo data: not connected to the API yet.",
+    "create": {
+      "title": "New key",
+      "nameLabel": "Key name",
+      "namePlaceholder": "my-script",
+      "submit": "Create key"
+    },
+    "newKey": {
+      "title": "Your new key",
+      "warning": "Copy it now: it will never be shown again.",
+      "copy": "Copy",
+      "copied": "Copied",
+      "done": "Done"
+    },
+    "list": {
+      "title": "Active keys",
+      "empty": "No API key yet.",
+      "name": "Name",
+      "key": "Key",
+      "created": "Created",
+      "lastUsed": "Last used",
+      "never": "Never",
+      "revoke": "Revoke",
+      "revokeLabel": "Revoke the key {{name}}",
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "subtitle": "Your account, your preferences, and your data.",
+    "demo": "Demo data: not connected to the API yet.",
+    "account": {
+      "title": "Account",
+      "save": "Save",
+      "saved": "Saved"
+    },
+    "preferences": {
+      "title": "Preferences",
+      "language": "Language",
+      "theme": "Theme"
+    },
+    "security": {
+      "title": "Security",
+      "twoFactor": "Two-factor authentication",
+      "soon": "Coming soon"
+    },
+    "data": {
+      "title": "My data (GDPR)",
+      "text": "Download everything we know about you, in a JSON file.",
+      "export": "Export my data"
+    },
+    "danger": {
+      "title": "Delete my account",
+      "text": "Your account and all your data will be deleted for good. This cannot be undone.",
+      "word": "DELETE",
+      "confirmLabel": "Type {{word}} to confirm",
+      "delete": "Delete my account"
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "This page does not exist, or it was moved.",
+    "back": "Back to the dossier"
+  },
+  "legal": {
+    "updated": "Last updated: November 2026",
+    "draft": "Draft: to be reviewed by the team before the evaluation.",
+    "back": "Back"
+  },
+  "privacy": {
+    "title": "Privacy policy",
+    "intro": "Transcendence helps you find and erase your personal data online. To do that, we have to handle some of your data ourselves. This page explains what we collect, why, and how you stay in control.",
+    "sections": [
+      {
+        "title": "What we collect",
+        "body": "Your account details (name, email, hashed password), the search results about you (sites, data brokers, breaches), the erasure requests you send through the app, and the API keys you create (we only store a hash of them)."
+      },
+      {
+        "title": "Why we collect it",
+        "body": "Only to run the service: find where your data appears, score the risk, prepare erasure requests and notify you of their progress. We never sell your data and never use it for advertising."
+      },
+      {
+        "title": "How long we keep it",
+        "body": "As long as your account exists. When you delete your account, all your data is deleted from our database."
+      },
+      {
+        "title": "Your rights (GDPR)",
+        "body": "You can access, export, correct or delete your data at any time from your profile page. You can also contact the team to exercise these rights."
+      }
+    ]
+  },
+  "terms": {
+    "title": "Terms of service",
+    "intro": "By creating an account on Transcendence, you accept these terms.",
+    "sections": [
+      {
+        "title": "The service",
+        "body": "Transcendence finds public traces of your personal data and helps you write erasure requests. It is a student project: results can be incomplete and no outcome is guaranteed."
+      },
+      {
+        "title": "Your account",
+        "body": "You must give accurate information and keep your password secret. You can only search for and request the erasure of your own data."
+      },
+      {
+        "title": "Acceptable use",
+        "body": "Do not use the service to collect data about other people, to send abusive requests, or to attack the platform or its public API."
+      },
+      {
+        "title": "Changes",
+        "body": "These terms may change. If they do, we will notify you in the app."
+      }
+    ]
+  }
+}

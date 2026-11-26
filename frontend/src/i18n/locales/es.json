@@ -1,0 +1,295 @@
+{
+  "app": {
+    "name": "Transcendence",
+    "tagline": "Encuentra y borra tus datos en internet."
+  },
+  "nav": {
+    "label": "Menú principal",
+    "dossier": "Expediente",
+    "notifications": "Notificaciones",
+    "apiKeys": "Claves API",
+    "logout": "Cerrar sesión",
+    "search": "Buscar…",
+    "searchLabel": "Buscar una página",
+    "noResults": "Sin resultados",
+    "collapse": "Plegar la barra lateral",
+    "expand": "Desplegar la barra lateral",
+    "openMenu": "Abrir el menú",
+    "closeMenu": "Cerrar el menú",
+    "shortcut": "Atajo: {{key}}",
+    "orbit": "Órbita",
+    "requests": "Solicitudes de supresión",
+    "profile": "Perfil",
+    "privacy": "Privacidad",
+    "terms": "Términos"
+  },
+  "theme": {
+    "toLight": "Cambiar al tema claro",
+    "toDark": "Cambiar al tema oscuro",
+    "light": "Claro",
+    "dark": "Oscuro"
+  },
+  "language": {
+    "label": "Idioma"
+  },
+  "types": {
+    "broker": "corredor de datos",
+    "search": "búsqueda de personas",
+    "social": "red social",
+    "breach": "filtración de datos"
+  },
+  "dataKinds": {
+    "name": "Nombre completo",
+    "email": "Dirección de email",
+    "phone": "Número de teléfono",
+    "address": "Dirección postal",
+    "birthdate": "Fecha de nacimiento",
+    "photo": "Fotos",
+    "password": "Contraseña (filtrada)"
+  },
+  "risk": {
+    "high": "Riesgo alto",
+    "medium": "Riesgo medio",
+    "low": "Riesgo bajo"
+  },
+  "status": {
+    "todo": "Pendiente",
+    "daysLeft": "D-{{count}}",
+    "daysLeftLabel_one": "Queda {{count}} día antes del plazo legal",
+    "daysLeftLabel_other": "Quedan {{count}} días antes del plazo legal",
+    "overdue": "Plazo superado",
+    "erased": "Borrado"
+  },
+  "home": {
+    "title_one": "Tus datos están en manos de {{count}} organización.",
+    "title_other": "Tus datos están en manos de {{count}} organizaciones.",
+    "subtitle_one": "{{count}} solicitud de supresión en curso.",
+    "subtitle_other": "{{count}} solicitudes de supresión en curso.",
+    "columns": {
+      "n": "N.º",
+      "organisation": "Organización",
+      "type": "Tipo",
+      "risk": "Riesgo",
+      "state": "Estado"
+    },
+    "start": "Iniciar",
+    "startLabel": "Iniciar la solicitud de supresión para {{site}}"
+  },
+  "organisation": {
+    "risk": "Puntuación de riesgo",
+    "status": "Estado",
+    "dataFound_one": "{{count}} dato encontrado",
+    "dataFound_other": "{{count}} datos encontrados",
+    "erasure": "Supresión",
+    "todoText": "Aún no se ha enviado ninguna solicitud. Una vez enviada, la organización tiene {{days}} días para responder (RGPD, art. 12).",
+    "start": "Iniciar la solicitud de supresión",
+    "pendingText": "Solicitud enviada el {{sent}}. Plazo legal: {{deadline}}.",
+    "viewRequest": "Ver la solicitud",
+    "erasedText": "Tus datos se borraron el {{date}}."
+  },
+  "requests": {
+    "title": "Solicitudes de supresión",
+    "subtitle": "Cada organización tiene {{days}} días para responder a una solicitud de supresión RGPD.",
+    "summary": "{{pending}} en curso · {{todo}} por iniciar · {{erased}} borradas",
+    "sections": {
+      "pending": "En curso",
+      "todo": "Por iniciar",
+      "erased": "Borradas"
+    },
+    "columns": {
+      "organisation": "Organización",
+      "sent": "Enviada",
+      "deadline": "Plazo",
+      "progress": "Progreso",
+      "risk": "Riesgo"
+    },
+    "erasedOn": "borrado el {{date}}",
+    "empty": "Nada por aquí."
+  },
+  "letter": {
+    "title": "Solicitud de supresión RGPD",
+    "demo": "Carta de demostración: el generador de IA aún no está conectado.",
+    "generating": "Redactando la carta…",
+    "draft": "Carta",
+    "to": "Para",
+    "contactPage": "Página",
+    "subject": "Asunto",
+    "generatedBy": {
+      "llm": "redactada por la IA",
+      "template": "plantilla legal"
+    },
+    "copy": "Copiar la carta",
+    "copied": "Copiada",
+    "mail": "Abrir en mi correo",
+    "markSent": "Marcar como enviada",
+    "sent": "Enviada el {{date}}",
+    "deadline": "plazo legal: {{date}}"
+  },
+  "orbit": {
+    "title": "Órbita",
+    "subtitle": "Tú estás en el centro. Cuanto más cerca está una organización, más riesgo. El anillo alrededor de un punto cuenta los 30 días del plazo legal.",
+    "you": "Tú",
+    "legendPending": "Solicitud enviada",
+    "list": "Todas las organizaciones",
+    "nodeLabel": "{{site}}, riesgo {{risk}}, {{status}}"
+  },
+  "auth": {
+    "login": {
+      "title": "Iniciar sesión",
+      "submit": "Entrar",
+      "submitting": "Entrando…",
+      "noAccount": "¿Aún no tienes cuenta?",
+      "signupLink": "Regístrate"
+    },
+    "signup": {
+      "title": "Registro",
+      "subtitle": "Descubre dónde están tus datos y haz que desaparezcan.",
+      "submit": "Crear mi cuenta",
+      "submitting": "Creando tu cuenta…",
+      "hasAccount": "¿Ya tienes cuenta?",
+      "loginLink": "Iniciar sesión",
+      "accept": "Al crear una cuenta, aceptas los <terms>Términos de uso</terms> y la <privacy>Política de privacidad</privacy>."
+    },
+    "fields": {
+      "name": "Nombre",
+      "email": "Email",
+      "password": "Contraseña"
+    },
+    "errors": {
+      "required": "Obligatorio",
+      "email": "Email no válido",
+      "password": "La contraseña no cumple las reglas",
+      "tooLong": "50 caracteres como máximo",
+      "invalidCredentials": "Email o contraseña incorrectos.",
+      "emailTaken": "Ya existe una cuenta con este email.",
+      "invalidInput": "Algunos campos no son válidos.",
+      "network": "No se puede conectar con el servidor. Revisa tu conexión.",
+      "unknown": "Algo ha fallado. Inténtalo de nuevo."
+    },
+    "rules": {
+      "title": "Reglas de la contraseña",
+      "length": "De 8 a 128 caracteres",
+      "upper": "1 mayúscula",
+      "lower": "1 minúscula",
+      "digit": "1 cifra",
+      "special": "1 carácter especial"
+    }
+  },
+  "apiKeys": {
+    "title": "Claves API",
+    "subtitle": "Una clave te permite acceder a tus datos desde tus propios scripts, mediante la API pública.",
+    "demo": "Datos de demostración: aún no conectados a la API.",
+    "create": {
+      "title": "Nueva clave",
+      "nameLabel": "Nombre de la clave",
+      "namePlaceholder": "mi-script",
+      "submit": "Crear clave"
+    },
+    "newKey": {
+      "title": "Tu nueva clave",
+      "warning": "Cópiala ahora: no se volverá a mostrar.",
+      "copy": "Copiar",
+      "copied": "Copiada",
+      "done": "Hecho"
+    },
+    "list": {
+      "title": "Claves activas",
+      "empty": "Todavía no hay ninguna clave API.",
+      "name": "Nombre",
+      "key": "Clave",
+      "created": "Creada",
+      "lastUsed": "Último uso",
+      "never": "Nunca",
+      "revoke": "Revocar",
+      "revokeLabel": "Revocar la clave {{name}}",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar"
+    }
+  },
+  "profile": {
+    "title": "Perfil",
+    "subtitle": "Tu cuenta, tus preferencias y tus datos.",
+    "demo": "Datos de demostración: aún no conectados a la API.",
+    "account": {
+      "title": "Cuenta",
+      "save": "Guardar",
+      "saved": "Guardado"
+    },
+    "preferences": {
+      "title": "Preferencias",
+      "language": "Idioma",
+      "theme": "Tema"
+    },
+    "security": {
+      "title": "Seguridad",
+      "twoFactor": "Autenticación en dos pasos",
+      "soon": "Próximamente"
+    },
+    "data": {
+      "title": "Mis datos (RGPD)",
+      "text": "Descarga todo lo que sabemos de ti, en un archivo JSON.",
+      "export": "Exportar mis datos"
+    },
+    "danger": {
+      "title": "Eliminar mi cuenta",
+      "text": "Tu cuenta y todos tus datos se eliminarán para siempre. No se puede deshacer.",
+      "word": "ELIMINAR",
+      "confirmLabel": "Escribe {{word}} para confirmar",
+      "delete": "Eliminar mi cuenta"
+    }
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "text": "Esta página no existe o se ha movido.",
+    "back": "Volver al expediente"
+  },
+  "legal": {
+    "updated": "Última actualización: noviembre de 2026",
+    "draft": "Borrador: el equipo debe revisarlo antes de la evaluación.",
+    "back": "Volver"
+  },
+  "privacy": {
+    "title": "Política de privacidad",
+    "intro": "Transcendence te ayuda a encontrar y borrar tus datos personales en internet. Para ello, nosotros mismos tenemos que tratar algunos de tus datos. Esta página explica qué recogemos, por qué y cómo mantienes el control.",
+    "sections": [
+      {
+        "title": "Qué recogemos",
+        "body": "Los datos de tu cuenta (nombre, email, contraseña cifrada), los resultados de búsqueda sobre ti (sitios, corredores de datos, filtraciones), las solicitudes de borrado que envías desde la aplicación y las claves API que creas (solo guardamos un hash)."
+      },
+      {
+        "title": "Por qué",
+        "body": "Solo para prestar el servicio: encontrar dónde aparecen tus datos, evaluar el riesgo, preparar las solicitudes de borrado e informarte de su progreso. Nunca vendemos tus datos ni los usamos para publicidad."
+      },
+      {
+        "title": "Cuánto tiempo los guardamos",
+        "body": "Mientras exista tu cuenta. Cuando la eliminas, todos tus datos se borran de nuestra base de datos."
+      },
+      {
+        "title": "Tus derechos (RGPD)",
+        "body": "Puedes consultar, exportar, corregir o eliminar tus datos en cualquier momento desde tu perfil. También puedes contactar al equipo para ejercer estos derechos."
+      }
+    ]
+  },
+  "terms": {
+    "title": "Términos de uso",
+    "intro": "Al crear una cuenta en Transcendence, aceptas estos términos.",
+    "sections": [
+      {
+        "title": "El servicio",
+        "body": "Transcendence encuentra rastros públicos de tus datos personales y te ayuda a redactar solicitudes de borrado. Es un proyecto estudiantil: los resultados pueden ser incompletos y no se garantiza ningún resultado."
+      },
+      {
+        "title": "Tu cuenta",
+        "body": "Debes dar información correcta y mantener tu contraseña en secreto. Solo puedes buscar y pedir el borrado de tus propios datos."
+      },
+      {
+        "title": "Uso aceptable",
+        "body": "No uses el servicio para recopilar datos de otras personas, enviar solicitudes abusivas ni atacar la plataforma o su API pública."
+      },
+      {
+        "title": "Cambios",
+        "body": "Estos términos pueden cambiar. Si cambian, te avisaremos en la aplicación."
+      }
+    ]
+  }
+}

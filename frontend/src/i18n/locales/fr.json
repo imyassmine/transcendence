@@ -1,0 +1,295 @@
+{
+  "app": {
+    "name": "Transcendence",
+    "tagline": "Trouvez et effacez vos données en ligne."
+  },
+  "nav": {
+    "label": "Menu principal",
+    "dossier": "Dossier",
+    "notifications": "Notifications",
+    "apiKeys": "Clés API",
+    "logout": "Se déconnecter",
+    "search": "Rechercher…",
+    "searchLabel": "Rechercher une page",
+    "noResults": "Aucun résultat",
+    "collapse": "Replier la barre latérale",
+    "expand": "Déplier la barre latérale",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "shortcut": "Raccourci : {{key}}",
+    "orbit": "Orbite",
+    "requests": "Demandes d'effacement",
+    "profile": "Profil",
+    "privacy": "Confidentialité",
+    "terms": "Conditions"
+  },
+  "theme": {
+    "toLight": "Passer au thème clair",
+    "toDark": "Passer au thème sombre",
+    "light": "Clair",
+    "dark": "Sombre"
+  },
+  "language": {
+    "label": "Langue"
+  },
+  "types": {
+    "broker": "courtier en données",
+    "search": "recherche de personnes",
+    "social": "réseau social",
+    "breach": "fuite de données"
+  },
+  "dataKinds": {
+    "name": "Nom complet",
+    "email": "Adresse email",
+    "phone": "Numéro de téléphone",
+    "address": "Adresse postale",
+    "birthdate": "Date de naissance",
+    "photo": "Photos",
+    "password": "Mot de passe (fuité)"
+  },
+  "risk": {
+    "high": "Risque élevé",
+    "medium": "Risque moyen",
+    "low": "Risque faible"
+  },
+  "status": {
+    "todo": "À faire",
+    "daysLeft": "J-{{count}}",
+    "daysLeftLabel_one": "{{count}} jour restant avant le délai légal",
+    "daysLeftLabel_other": "{{count}} jours restants avant le délai légal",
+    "overdue": "Délai dépassé",
+    "erased": "Effacé"
+  },
+  "home": {
+    "title_one": "Vos données sont détenues par {{count}} organisme.",
+    "title_other": "Vos données sont détenues par {{count}} organismes.",
+    "subtitle_one": "{{count}} demande d'effacement en cours.",
+    "subtitle_other": "{{count}} demandes d'effacement en cours.",
+    "columns": {
+      "n": "N°",
+      "organisation": "Organisme",
+      "type": "Type",
+      "risk": "Risque",
+      "state": "État"
+    },
+    "start": "Lancer",
+    "startLabel": "Lancer la demande d'effacement pour {{site}}"
+  },
+  "organisation": {
+    "risk": "Score de risque",
+    "status": "État",
+    "dataFound_one": "{{count}} donnée trouvée",
+    "dataFound_other": "{{count}} données trouvées",
+    "erasure": "Effacement",
+    "todoText": "Aucune demande envoyée. Une fois envoyée, l'organisme a {{days}} jours pour répondre (RGPD, art. 12).",
+    "start": "Lancer la demande d'effacement",
+    "pendingText": "Demande envoyée le {{sent}}. Délai légal : {{deadline}}.",
+    "viewRequest": "Voir la demande",
+    "erasedText": "Vos données ont été effacées le {{date}}."
+  },
+  "requests": {
+    "title": "Demandes d'effacement",
+    "subtitle": "Chaque organisme a {{days}} jours pour répondre à une demande d'effacement RGPD.",
+    "summary": "{{pending}} en cours · {{todo}} à lancer · {{erased}} effacées",
+    "sections": {
+      "pending": "En cours",
+      "todo": "À lancer",
+      "erased": "Effacées"
+    },
+    "columns": {
+      "organisation": "Organisme",
+      "sent": "Envoyée",
+      "deadline": "Échéance",
+      "progress": "Avancement",
+      "risk": "Risque"
+    },
+    "erasedOn": "effacé le {{date}}",
+    "empty": "Rien ici."
+  },
+  "letter": {
+    "title": "Demande d'effacement RGPD",
+    "demo": "Lettre de démonstration : le générateur IA n'est pas encore branché.",
+    "generating": "Rédaction de la lettre…",
+    "draft": "Lettre",
+    "to": "À",
+    "contactPage": "Page",
+    "subject": "Objet",
+    "generatedBy": {
+      "llm": "rédigée par l'IA",
+      "template": "modèle juridique"
+    },
+    "copy": "Copier la lettre",
+    "copied": "Copiée",
+    "mail": "Ouvrir dans ma messagerie",
+    "markSent": "Marquer comme envoyée",
+    "sent": "Envoyée le {{date}}",
+    "deadline": "délai légal : {{date}}"
+  },
+  "orbit": {
+    "title": "Orbite",
+    "subtitle": "Vous êtes au centre. Plus un organisme est proche, plus il est risqué. L'anneau autour d'un point compte les 30 jours du délai légal.",
+    "you": "Vous",
+    "legendPending": "Demande envoyée",
+    "list": "Tous les organismes",
+    "nodeLabel": "{{site}}, risque {{risk}}, {{status}}"
+  },
+  "auth": {
+    "login": {
+      "title": "Connexion",
+      "submit": "Se connecter",
+      "submitting": "Connexion…",
+      "noAccount": "Pas encore de compte ?",
+      "signupLink": "S'inscrire"
+    },
+    "signup": {
+      "title": "Inscription",
+      "subtitle": "Découvrez où sont vos données, puis faites-les disparaître.",
+      "submit": "Créer mon compte",
+      "submitting": "Création du compte…",
+      "hasAccount": "Déjà un compte ?",
+      "loginLink": "Se connecter",
+      "accept": "En créant un compte, vous acceptez les <terms>Conditions d'utilisation</terms> et la <privacy>Politique de confidentialité</privacy>."
+    },
+    "fields": {
+      "name": "Nom",
+      "email": "Email",
+      "password": "Mot de passe"
+    },
+    "errors": {
+      "required": "Obligatoire",
+      "email": "Email invalide",
+      "password": "Le mot de passe ne respecte pas les règles",
+      "tooLong": "50 caractères maximum",
+      "invalidCredentials": "Email ou mot de passe incorrect.",
+      "emailTaken": "Un compte existe déjà avec cet email.",
+      "invalidInput": "Certains champs ne sont pas valides.",
+      "network": "Impossible de joindre le serveur. Vérifiez votre connexion.",
+      "unknown": "Une erreur est survenue. Réessayez."
+    },
+    "rules": {
+      "title": "Règles du mot de passe",
+      "length": "8 à 128 caractères",
+      "upper": "1 majuscule",
+      "lower": "1 minuscule",
+      "digit": "1 chiffre",
+      "special": "1 caractère spécial"
+    }
+  },
+  "apiKeys": {
+    "title": "Clés API",
+    "subtitle": "Une clé permet d'accéder à vos données depuis vos propres scripts, via l'API publique.",
+    "demo": "Données de démonstration : pas encore reliées à l'API.",
+    "create": {
+      "title": "Nouvelle clé",
+      "nameLabel": "Nom de la clé",
+      "namePlaceholder": "mon-script",
+      "submit": "Créer la clé"
+    },
+    "newKey": {
+      "title": "Votre nouvelle clé",
+      "warning": "Copiez-la maintenant : elle ne sera plus jamais affichée.",
+      "copy": "Copier",
+      "copied": "Copiée",
+      "done": "Terminé"
+    },
+    "list": {
+      "title": "Clés actives",
+      "empty": "Aucune clé API pour l'instant.",
+      "name": "Nom",
+      "key": "Clé",
+      "created": "Créée le",
+      "lastUsed": "Dernière utilisation",
+      "never": "Jamais",
+      "revoke": "Révoquer",
+      "revokeLabel": "Révoquer la clé {{name}}",
+      "confirm": "Confirmer",
+      "cancel": "Annuler"
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "subtitle": "Votre compte, vos préférences et vos données.",
+    "demo": "Données de démonstration : pas encore reliées à l'API.",
+    "account": {
+      "title": "Compte",
+      "save": "Enregistrer",
+      "saved": "Enregistré"
+    },
+    "preferences": {
+      "title": "Préférences",
+      "language": "Langue",
+      "theme": "Thème"
+    },
+    "security": {
+      "title": "Sécurité",
+      "twoFactor": "Double authentification",
+      "soon": "Bientôt disponible"
+    },
+    "data": {
+      "title": "Mes données (RGPD)",
+      "text": "Téléchargez tout ce que nous savons sur vous, dans un fichier JSON.",
+      "export": "Exporter mes données"
+    },
+    "danger": {
+      "title": "Supprimer mon compte",
+      "text": "Votre compte et toutes vos données seront supprimés définitivement. C'est irréversible.",
+      "word": "SUPPRIMER",
+      "confirmLabel": "Tapez {{word}} pour confirmer",
+      "delete": "Supprimer mon compte"
+    }
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "text": "Cette page n'existe pas, ou elle a été déplacée.",
+    "back": "Retour au dossier"
+  },
+  "legal": {
+    "updated": "Dernière mise à jour : novembre 2026",
+    "draft": "Brouillon : à relire en équipe avant l'évaluation.",
+    "back": "Retour"
+  },
+  "privacy": {
+    "title": "Politique de confidentialité",
+    "intro": "Transcendence vous aide à trouver et effacer vos données personnelles en ligne. Pour cela, nous devons nous-mêmes traiter certaines de vos données. Cette page explique ce que nous collectons, pourquoi, et comment vous gardez le contrôle.",
+    "sections": [
+      {
+        "title": "Ce que nous collectons",
+        "body": "Les informations de votre compte (nom, email, mot de passe haché), les résultats de recherche vous concernant (sites, courtiers en données, fuites), les demandes d'effacement envoyées depuis l'application et les clés API que vous créez (nous n'en gardons qu'un hash)."
+      },
+      {
+        "title": "Pourquoi",
+        "body": "Uniquement pour faire fonctionner le service : trouver où apparaissent vos données, évaluer le risque, préparer les demandes d'effacement et vous informer de leur avancement. Nous ne vendons jamais vos données et ne les utilisons pas pour de la publicité."
+      },
+      {
+        "title": "Durée de conservation",
+        "body": "Tant que votre compte existe. Quand vous supprimez votre compte, toutes vos données sont supprimées de notre base."
+      },
+      {
+        "title": "Vos droits (RGPD)",
+        "body": "Vous pouvez à tout moment consulter, exporter, corriger ou supprimer vos données depuis votre page profil. Vous pouvez aussi contacter l'équipe pour exercer ces droits."
+      }
+    ]
+  },
+  "terms": {
+    "title": "Conditions d'utilisation",
+    "intro": "En créant un compte sur Transcendence, vous acceptez ces conditions.",
+    "sections": [
+      {
+        "title": "Le service",
+        "body": "Transcendence trouve les traces publiques de vos données personnelles et vous aide à rédiger des demandes d'effacement. C'est un projet étudiant : les résultats peuvent être incomplets et aucun résultat n'est garanti."
+      },
+      {
+        "title": "Votre compte",
+        "body": "Vous devez donner des informations exactes et garder votre mot de passe secret. Vous ne pouvez rechercher et demander l'effacement que de vos propres données."
+      },
+      {
+        "title": "Utilisation acceptable",
+        "body": "N'utilisez pas le service pour collecter des données sur d'autres personnes, envoyer des demandes abusives ou attaquer la plateforme ou son API publique."
+      },
+      {
+        "title": "Modifications",
+        "body": "Ces conditions peuvent évoluer. Si c'est le cas, nous vous préviendrons dans l'application."
+      }
+    ]
+  }
+}
