@@ -1,4 +1,5 @@
 import { useEffect, useState, type KeyboardEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 import { Button } from '../components/ui/Button'
@@ -18,17 +19,16 @@ type View =
 
 const NOTIFICATIONS = '/api/v1/notifications'
 const PAGE_SIZE = 10
-const TABS = [
-  { id: 'unread', label: 'Unread' },
-  { id: 'read', label: 'Read' },
-] as const
-type NotificationTab = (typeof TABS)[number]['id']
+const TABS = ['unread', 'read'] as const
+type NotificationTab = (typeof TABS)[number]
 
 function isUnauthorized(error: unknown) {
   return error instanceof ApiError && error.status === 401
 }
 
 export function NotificationsPage() {
+  const { t, i18n } = useTranslation()
+  const locale = i18n.resolvedLanguage ?? i18n.language
   const [page, setPage] = useState<{ tab: NotificationTab; offset: number }>({ tab: 'unread', offset: 0 })
   const [view, setView] = useState<View>({ status: 'loading' })
   const [selectedIds, setSelectedIds] = useState<string[]>([])
@@ -118,14 +118,16 @@ export function NotificationsPage() {
   return (
     <>
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h1 className="font-mono text-3xl">Notifications</h1>
+        <h1 className="font-mono text-3xl">{t('nav.notifications')}</h1>
         {view.status === 'ready' && (
-          <p role="status" className="font-mono text-sm text-muted">{view.unreadCount} unread</p>
+          <p role="status" className="font-mono text-sm text-muted">
+            {t('notifications.unreadCount', { count: view.unreadCount })}
+          </p>
         )}
       </div>
 
-      <div role="tablist" aria-label="Notifications" className="mt-6 flex gap-4 border-b border-border" onKeyDown={handleTabKeys}>
-        {TABS.map(({ id, label }) => (
+      <div role="tablist" aria-label={t('nav.notifications')} className="mt-6 flex gap-4 border-b border-border" onKeyDown={handleTabKeys}>
+        {TABS.map((id) => (
           <button
             key={id}
             id={`notifications-tab-${id}`}
@@ -140,7 +142,7 @@ export function NotificationsPage() {
               : 'border-b-2 border-transparent px-2 pb-2 text-sm text-muted hover:text-fg'}
             onClick={() => { if (id !== tab) loadPage(0, id) }}
           >
-            {label}
+            {t(`notifications.tabs.${id}`)}
           </button>
         ))}
       </div>
@@ -148,49 +150,49 @@ export function NotificationsPage() {
       <section id="notifications-panel" role="tabpanel" aria-labelledby={`notifications-tab-${tab}`} tabIndex={0}>
         {view.status === 'loading' && (
           <Card className="mt-6 p-4">
-            <p role="status" className="text-sm text-muted">Loading notifications…</p>
+            <p role="status" className="text-sm text-muted">{t('notifications.loading')}</p>
           </Card>
         )}
         {view.status === 'signed-out' && (
           <Card className="mt-6 space-y-3 p-4">
-            <p role="alert" className="text-sm">Log in to view your notifications.</p>
-            <Link to="/login" className="text-sm font-medium text-accent underline">Log in</Link>
+            <p role="alert" className="text-sm">{t('notifications.signedOut')}</p>
+            <Link to="/login" className="text-sm font-medium text-accent underline">{t('auth.login.submit')}</Link>
           </Card>
         )}
         {view.status === 'error' && (
           <Card className="mt-6 space-y-3 p-4">
-            <p role="alert" className="text-sm">Could not load notifications.</p>
-            <Button variant="secondary" size="sm" onClick={() => loadPage(offset)}>Try again</Button>
+            <p role="alert" className="text-sm">{t('notifications.loadError')}</p>
+            <Button variant="secondary" size="sm" onClick={() => loadPage(offset)}>{t('notifications.retry')}</Button>
           </Card>
         )}
         {view.status === 'ready' && view.notifications.length === 0 && (
           <Card className="mt-6 p-4">
-            <p className="text-sm text-muted">{isUnreadTab ? 'No unread notifications.' : 'No read notifications.'}</p>
+            <p className="text-sm text-muted">{t(`notifications.empty.${tab}`)}</p>
           </Card>
         )}
         {view.status === 'ready' && view.notifications.length > 0 && (
           <>
             {isUnreadTab && (
               <div className="mt-6 flex flex-wrap items-center justify-between gap-2">
-                <span className="text-sm text-muted">{selectedIds.length} selected</span>
+                <span className="text-sm text-muted">{t('notifications.selectedCount', { count: selectedIds.length })}</span>
                 <div className="flex flex-wrap gap-2">
                   <Button
                     variant="secondary"
                     size="sm"
                     disabled={saving || unreadPageIds.length === 0}
-                    aria-label={allSelected ? 'Clear selection' : 'Select all unread notifications on this page'}
+                    aria-label={t(allSelected ? 'notifications.clearSelection' : 'notifications.selectAllLabel')}
                     onClick={() => setSelectedIds(allSelected ? [] : unreadPageIds)}
                   >
-                    {allSelected ? 'Clear selection' : 'Select all'}
+                    {t(allSelected ? 'notifications.clearSelection' : 'notifications.selectAll')}
                   </Button>
                   <Button size="sm" disabled={saving || selectedIds.length === 0} onClick={() => void markRead()}>
-                    Mark selected as read
+                    {t('notifications.markSelected')}
                   </Button>
                 </div>
               </div>
             )}
-            {saving && <p role="status" className="mt-3 text-sm text-muted">Marking as read…</p>}
-            {saveError && <p role="alert" className="mt-3 text-sm text-accent">Could not mark notifications as read. Try again.</p>}
+            {saving && <p role="status" className="mt-3 text-sm text-muted">{t('notifications.saving')}</p>}
+            {saveError && <p role="alert" className="mt-3 text-sm text-accent">{t('notifications.saveError')}</p>}
             <Card className={isUnreadTab ? 'mt-3' : 'mt-6'}>
               <ul className="divide-y divide-border">
                 {view.notifications.map((notification) => (
@@ -198,7 +200,7 @@ export function NotificationsPage() {
                     {isUnreadTab && (
                       <input
                         type="checkbox"
-                        aria-label={`Select ${notification.title}`}
+                        aria-label={t('notifications.selectLabel', { title: notification.title })}
                         className="mt-1 accent-accent"
                         checked={selectedIds.includes(notification.id)}
                         disabled={saving}
@@ -209,18 +211,18 @@ export function NotificationsPage() {
                       <h2 className="font-medium">{notification.title}</h2>
                       <p className="mt-1 text-sm">{notification.message}</p>
                       <time dateTime={notification.created_at} className="mt-2 block text-xs text-muted">
-                        {new Date(notification.created_at).toLocaleString()}
+                        {new Date(notification.created_at).toLocaleString(locale)}
                       </time>
                     </div>
                     {isUnreadTab && (
                       <Button
                         variant="secondary"
                         size="sm"
-                        aria-label={`Mark ${notification.title} as read`}
+                        aria-label={t('notifications.markReadLabel', { title: notification.title })}
                         disabled={saving}
                         onClick={() => void markRead(notification.id)}
                       >
-                        Mark as read
+                        {t('notifications.markRead')}
                       </Button>
                     )}
                   </li>
@@ -228,9 +230,9 @@ export function NotificationsPage() {
               </ul>
             </Card>
             {(offset > 0 || view.hasNextPage) && (
-              <nav aria-label="Notifications pagination" className="mt-4 flex justify-end gap-2">
+              <nav aria-label={t('notifications.pagination.label')} className="mt-4 flex justify-end gap-2">
                 <Button variant="secondary" size="sm" disabled={saving || offset === 0} onClick={() => loadPage(offset - PAGE_SIZE)}>
-                  Previous
+                  {t('notifications.pagination.previous')}
                 </Button>
                 <Button
                   variant="secondary"
@@ -238,7 +240,7 @@ export function NotificationsPage() {
                   disabled={saving || !view.hasNextPage}
                   onClick={() => loadPage(offset + PAGE_SIZE)}
                 >
-                  Next
+                  {t('notifications.pagination.next')}
                 </Button>
               </nav>
             )}
