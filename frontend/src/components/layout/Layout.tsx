@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useNavigate } from 'react-router-dom'
-
 import { useKeyboardShortcuts } from '../../hooks/useKeyboardShortcuts'
 import { cn } from '../../utils/cn'
 import { loadString, saveString } from '../../utils/storage'
