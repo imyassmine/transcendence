@@ -1,9 +1,11 @@
 from fastapi import FastAPI
+from ia.api import ia_lifespan, router as ia_router
 
 from .v1.notification_api import notif_router
 
-app = FastAPI(title="transcendence API")
+app = FastAPI(title="transcendence API", lifespan=ia_lifespan)
 app.include_router(notif_router)
+app.include_router(ia_router)
 
 
 @app.get("/")

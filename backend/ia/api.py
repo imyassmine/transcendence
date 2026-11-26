@@ -4,13 +4,18 @@ import os
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from dataclasses import asdict, dataclass
+from datetime import timedelta
 from pathlib import Path
 from typing import Any
 
+from db import get_db
 from fastapi import APIRouter, Depends, FastAPI, HTTPException, Query, Request
 from fastapi.responses import StreamingResponse
+from models import Users
+from services import get_current_user
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from .cache import TTLCache
+from . import repository
 from .letters import Letter, LetterGenerator, LetterRequest
 from .links.dataset import DeletionDataset
 from .links.domains import _extract, normalize_domain
@@ -25,15 +30,33 @@ DATASET = Path(__file__).resolve().parent / "links" / "data" / "jdm_sites.json"
 LINK_RATE_PER_MIN = int(os.getenv("IA_LINK_RATE_PER_MIN", "60"))
 LETTER_RATE_PER_MIN = int(os.getenv("IA_LETTER_RATE_PER_MIN", "10"))
 MAX_PARALLEL_FINDS = int(os.getenv("IA_MAX_PARALLEL_FINDS", "3"))
-LINK_CACHE_TTL_S = float(os.getenv("IA_LINK_CACHE_TTL_S", str(7 * 24 * 3600)))
+LINK_CACHE_MAX_AGE = timedelta(days=float(os.getenv("IA_LINK_CACHE_TTL_DAYS", "30")))
+
+
+class KeyedLocks:
+    def __init__(self) -> None:
+        self._locks: dict[str, tuple[asyncio.Lock, int]] = {}
+
+    @asynccontextmanager
+    async def hold(self, key: str) -> AsyncIterator[None]:
+        lock, users = self._locks.get(key, (asyncio.Lock(), 0))
+        self._locks[key] = (lock, users + 1)
+        try:
+            async with lock:
+                yield
+        finally:
+            lock, users = self._locks[key]
+            if users == 1:
+                del self._locks[key]
+            else:
+                self._locks[key] = (lock, users - 1)
 
 
 @dataclass
 class IAServices:
     finder: LinkFinder
     generator: LetterGenerator
-    cache: TTLCache[DeletionLink]
-    contacts: TTLCache[tuple[str | None, str | None]]
+    locks: KeyedLocks
     link_limiter: RateLimiter
     letter_limiter: RateLimiter
     semaphore: asyncio.Semaphore
@@ -43,8 +66,7 @@ def build_services(finder: LinkFinder, generator: LetterGenerator) -> IAServices
     return IAServices(
         finder=finder,
         generator=generator,
-        cache=TTLCache(LINK_CACHE_TTL_S),
-        contacts=TTLCache(LINK_CACHE_TTL_S),
+        locks=KeyedLocks(),
         link_limiter=RateLimiter(LINK_RATE_PER_MIN),
         letter_limiter=RateLimiter(LETTER_RATE_PER_MIN),
         semaphore=asyncio.Semaphore(MAX_PARALLEL_FINDS),
@@ -68,8 +90,8 @@ def get_services(request: Request) -> IAServices:
     return request.app.state.ia
 
 
-def get_user_key(request: Request) -> str:
-    return request.client.host if request.client else "anonymous"
+def get_user_key(user: Users = Depends(get_current_user)) -> str:
+    return str(user.id)
 
 
 def check_rate(limiter: RateLimiter, key: str) -> None:
@@ -91,16 +113,21 @@ def sse(event: dict[str, Any]) -> str:
     return f"event: {event['type']}\ndata: {data}\n\n"
 
 
-async def find_recipient(ia: IAServices, domain: str,
+async def find_recipient(ia: IAServices, session: AsyncSession, domain: str,
                          service: str | None) -> tuple[str | None, str | None]:
-    link = ia.cache.get(domain)
-    if link and link.contact_email:
-        return link.contact_email, None
-    if (cached := ia.contacts.get(domain)) is not None:
-        return cached
-    async with ia.semaphore:
-        contact = await ia.finder.find_contact(domain, service)
-    ia.contacts.set(domain, contact)
+    contact = await repository.get_contact(session, domain, LINK_CACHE_MAX_AGE)
+    if contact is not None:
+        return contact
+    await session.rollback()
+    async with ia.locks.hold(f"contact:{domain}"):
+        contact = await repository.get_contact(session, domain, LINK_CACHE_MAX_AGE)
+        if contact is not None:
+            return contact
+        await session.rollback()
+        async with ia.semaphore:
+            contact = await ia.finder.find_contact(domain, service)
+        await repository.save_contact(session, domain, *contact)
+        await session.commit()
     return contact
 
 
@@ -112,24 +139,34 @@ async def get_link(account: str = Query(min_length=3, max_length=254),
                    service: str | None = Query(None, max_length=100),
                    refresh: bool = False,
                    ia: IAServices = Depends(get_services),
+                   session: AsyncSession = Depends(get_db),
                    user: str = Depends(get_user_key)) -> dict[str, Any]:
     domain = domain_or_422(account)
-    if not refresh and (cached := ia.cache.get(domain)) is not None:
+    if not refresh and (cached := await repository.get_link(
+            session, domain, LINK_CACHE_MAX_AGE)) is not None:
         return asdict(cached) | {"cached": True}
     check_rate(ia.link_limiter, user)
-    async with ia.semaphore:
-        result = await ia.finder.find(domain, service)
-    ia.cache.set(domain, result)
+    await session.rollback()
+    async with ia.locks.hold(f"link:{domain}"):
+        if not refresh and (cached := await repository.get_link(
+                session, domain, LINK_CACHE_MAX_AGE)) is not None:
+            return asdict(cached) | {"cached": True}
+        await session.rollback()
+        async with ia.semaphore:
+            result = await ia.finder.find(domain, service)
+        await repository.save_link(session, result)
+        await session.commit()
     return asdict(result) | {"cached": False}
 
 
 @router.post("/letter", response_model=None)
 async def post_letter(req: LetterRequest, stream: bool = True,
                       ia: IAServices = Depends(get_services),
+                      session: AsyncSession = Depends(get_db),
                       user: str = Depends(get_user_key)) -> Letter | StreamingResponse:
     check_rate(ia.letter_limiter, user)
     if req.recipient_email is None and req.domain:
-        email, page = await find_recipient(ia, normalize_domain(req.domain), req.service_name)
+        email, page = await find_recipient(ia, session, normalize_domain(req.domain), req.service_name)
         req = req.model_copy(update={"recipient_email": email,
                                      "contact_url": req.contact_url or page})
     if not stream:
