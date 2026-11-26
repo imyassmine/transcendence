@@ -1,6 +1,6 @@
 import type { RefObject } from 'react'
 import { useTranslation } from 'react-i18next'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 import { cn } from '../../utils/cn'
 import { LanguageSelect } from '../ui/LanguageSelect'
@@ -116,6 +116,13 @@ export function Sidebar({ collapsed, searchRef, onLogout, onToggleCollapse, onCl
           <LanguageSelect />
           <ThemeToggle />
         </div>
+
+        {!collapsed && (
+          <div className="flex gap-3 px-2 font-mono text-[10px] text-muted">
+            <Link to="/privacy" onClick={onClose} className="hover:text-fg">{t('nav.privacy')}</Link>
+            <Link to="/terms" onClick={onClose} className="hover:text-fg">{t('nav.terms')}</Link>
+          </div>
+        )}
       </div>
     </nav>
   )
