@@ -54,6 +54,8 @@ services:
 
   backend:
     build: ./backend
+    ports:
+      - "127.0.0.1:8000:8000"
     environment:
       DB_URL: postgresql+asyncpg://transcendence:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@db:5432/transcendence
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env}
