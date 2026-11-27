@@ -1,11 +1,12 @@
 from db import get_db
 from fastapi import APIRouter, Depends, HTTPException, status, Response
-from core import get_config, create_access_token
+from core import create_access_token, set_auth_cookie
 from models import Users
 from schemas import RegisterRequest, User, LoginRequest
 from services import register_user, authenticate_user, get_current_user
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
+
 
 auth_router = APIRouter(prefix="/api/v1/auth")
 
@@ -39,14 +40,7 @@ async def login(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials"
         )
     token = create_access_token(user.id)
-    response.set_cookie(
-        key="access_token",
-        value=token,
-        httponly=True,  # le JavaScript du navigateur ne peut pas lire le cookie pour limiter le vol de token par attaque XSS
-        secure=True,  # le cookie ne part qu'en HTTPS
-        max_age=get_config().JWT_EXPIRE_MINUTES * 60,
-        path="/api",
-    )
+    set_auth_cookie(response, token)
     return User.model_validate(user)
 
 

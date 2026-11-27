@@ -1,10 +1,11 @@
-from datetime import datetime, timedelta, timezone
-from uuid import UUID, uuid4
-
 import jwt
+from datetime import datetime, timedelta, timezone
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError, InvalidHashError, VerificationError
 from core.config import get_config
+from fastapi import Response
+from uuid import UUID, uuid4
+
 
 _hasher = PasswordHasher()
 ALGORITHM = "HS256"
@@ -45,3 +46,15 @@ def decode_access_token(token: str) -> UUID | None:
         return UUID(payload["sub"])
     except jwt.PyJWTError:
         return None
+
+
+def set_auth_cookie(response: Response, token: str) -> None:
+    response.set_cookie(
+        key="access_token",
+        value=token,
+        httponly=True,
+        secure=True,
+        samesite="lax",
+        max_age=get_config().JWT_EXPIRE_MINUTES * 60,
+        path="/api",
+    )

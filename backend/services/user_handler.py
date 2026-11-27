@@ -32,12 +32,12 @@ async def get_current_user(
     )
 
 
-def _normalize_email(email: str) -> str:
+def normalize_email(email: str) -> str:
     return email.strip().lower()
 
 
 async def register_user(session: AsyncSession, data: RegisterRequest) -> Users:
-    email = _normalize_email(data.email)
+    email = normalize_email(data.email)
     hashed = await asyncio.to_thread(hash_password, data.password)
     user = Users(name=data.name, email=email, hashed_pwd=hashed)
     session.add(user)
@@ -46,7 +46,7 @@ async def register_user(session: AsyncSession, data: RegisterRequest) -> Users:
 
 async def authenticate_user(session: AsyncSession, data: LoginRequest) -> Users | None:
     user = await session.scalar(
-        select(Users).where(Users.email == _normalize_email(data.email))
+        select(Users).where(Users.email == normalize_email(data.email))
     )
     if user is None or user.hashed_pwd is None:
         await asyncio.to_thread(verify_password, _DUMMY_HASH, data.password)

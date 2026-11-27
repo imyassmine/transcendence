@@ -6,3 +6,4 @@ from .notification_handler import (
     mark_notification_read_handler,
 )
 from .user_handler import get_current_user, register_user, authenticate_user
+from .oauth_handler import OAuthEmailConflict, get_or_create_oauth_user
