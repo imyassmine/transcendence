@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:17
+    image: docker.io/library/postgres:17
     environment:
       POSTGRES_DB: transcendence
       POSTGRES_USER: transcendence
@@ -14,10 +14,10 @@ services:
       retries: 12
 
   ollama:
-    image: ollama/ollama:latest
+    image: docker.io/ollama/ollama:latest
     restart: unless-stopped
     volumes:
-      - ./.ollama:/root/.ollama
+      -  /goinfre/${USER}/transcendence-ollama:/root/.ollama
     ports:
       - "127.0.0.1:11434:11434"
     environment:
@@ -32,7 +32,7 @@ services:
       retries: 30
 
   ollama-pull:
-    image: ollama/ollama:latest
+    image: docker.io/ollama/ollama:latest
     environment:
       - OLLAMA_HOST=http://ollama:11434
     command: pull ${OLLAMA_MODEL:-qwen2.5:7b}
