@@ -13,6 +13,9 @@ class Config(BaseSettings):
     JWT_SECRET: str = Field(min_length=32)
     JWT_EXPIRE_MINUTES: int = 30
     IA_LINK_CACHE_TTL_DAYS: int = 30
+    GOOGLE_CLIENT_ID: str = ""
+    GOOGLE_CLIENT_SECRET: str = ""
+    GOOGLE_REDIRECT_URI: str = "https://localhost:8443/api/v1/auth/oauth/google/callback"
 
 
 @lru_cache
