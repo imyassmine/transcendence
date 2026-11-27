@@ -59,7 +59,7 @@ services:
     environment:
       DB_URL: postgresql+asyncpg://transcendence:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@db:5432/transcendence
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env}
-      JWT_EXPIRE_MINUTES: ${JWT_EXPIRE_MINUTES:-60}
+      JWT_EXPIRE_MINUTES: ${JWT_EXPIRE_MINUTES:-30}
       OLLAMA_URL: http://ollama:11434
       OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:7b}
       SEARXNG_URL: http://searxng:8080

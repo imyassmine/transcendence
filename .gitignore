@@ -225,3 +225,9 @@ __marimo__/
 
 # Dossier tests à la racine uniquement (backend/tests reste versionné)
 /tests/
+
+# Fichier test sécurité
+backend/tests/test_security.py
+
+# Cookies file
+cookies.txt

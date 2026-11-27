@@ -1,12 +1,13 @@
 from db import get_db
 from fastapi import APIRouter, Depends, HTTPException, status, Response
 from core import get_config, create_access_token
+from models import Users
 from schemas import RegisterRequest, User, LoginRequest
-from services import register_user, authenticate_user
+from services import register_user, authenticate_user, get_current_user
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
 
-auth_router = APIRouter(prefix="/api/v1/auth", tags=["auth"])
+auth_router = APIRouter(prefix="/api/v1/auth")
 
 
 @auth_router.post("/register", status_code=status.HTTP_201_CREATED)
@@ -41,9 +42,24 @@ async def login(
     response.set_cookie(
         key="access_token",
         value=token,
-        httponly=True, # le JavaScript du navigateur ne peut pas lire le cookie pour limiter le vol de token par attaque XSS
-        secure=True, # le cookie ne part qu'en HTTPS
-        max_age=get_config().JWT_EXPIRE_MINUTES * 60, # Le cookie et le token expirent ensemble
-        path="/api", # le cookie n'est envoyé qu'aux appels d'API
+        httponly=True,  # le JavaScript du navigateur ne peut pas lire le cookie pour limiter le vol de token par attaque XSS
+        secure=True,  # le cookie ne part qu'en HTTPS
+        max_age=get_config().JWT_EXPIRE_MINUTES * 60,
+        path="/api",
     )
     return User.model_validate(user)
+
+
+@auth_router.get("/me")
+async def me(user: Users = Depends(get_current_user)) -> User:
+    return User.model_validate(user)
+
+
+@auth_router.post("/logout", status_code=status.HTTP_204_NO_CONTENT)
+async def logout(response: Response) -> None:
+    response.delete_cookie(
+        key="access_token",
+        httponly=True,
+        secure=True,
+        path="/api",
+    )

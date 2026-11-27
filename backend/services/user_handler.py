@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Annotated
 
 
-_DUMMY_HASH = hash_password("dummy-password")  # hash factice calculé une fois
+_DUMMY_HASH = hash_password("dummy-password")
 # Le hash factice sert à ce que « email inconnu » prenne le même temps que « mauvais mot de passe »,
 # sinon on peut deviner quels emails existent
 
