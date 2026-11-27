@@ -1,10 +1,11 @@
-from datetime import datetime, timedelta, timezone
-from uuid import UUID
-
 import jwt
+from datetime import datetime, timedelta, timezone
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError, InvalidHashError, VerificationError
 from core.config import get_config
+from fastapi import Response
+from uuid import UUID, uuid4
+
 
 _hasher = PasswordHasher()
 ALGORITHM = "HS256"
@@ -23,18 +24,37 @@ def verify_password(hash: str, password: str) -> bool:
 
 def create_access_token(user_id: UUID) -> str:
     config = get_config()
-    expire = datetime.now(timezone.utc) + timedelta(
-        minutes=config.JWT_EXPIRE_MINUTES
-    )
-    payload = {"sub": str(user_id), "exp": expire}
+    issued_at = datetime.now(timezone.utc)
+    expire = issued_at + timedelta(minutes=config.JWT_EXPIRE_MINUTES)
+    payload = {
+        "sub": str(user_id),
+        "iat": issued_at,
+        "jti": str(uuid4()),
+        "exp": expire,
+    }
     return jwt.encode(payload, config.JWT_SECRET, algorithm=ALGORITHM)
 
 
 def decode_access_token(token: str) -> UUID | None:
     try:
         payload = jwt.decode(
-            token, get_config().JWT_SECRET, algorithms=[ALGORITHM]
+            token,
+            get_config().JWT_SECRET,
+            algorithms=[ALGORITHM],
+            options={"require": ["exp", "sub"]},
         )
         return UUID(payload["sub"])
-    except (jwt.PyJWTError, KeyError, ValueError):
+    except jwt.PyJWTError:
         return None
+
+
+def set_auth_cookie(response: Response, token: str) -> None:
+    response.set_cookie(
+        key="access_token",
+        value=token,
+        httponly=True,
+        secure=True,
+        samesite="lax",
+        max_age=get_config().JWT_EXPIRE_MINUTES * 60,
+        path="/api",
+    )
