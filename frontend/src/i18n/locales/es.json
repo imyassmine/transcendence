@@ -106,6 +106,38 @@
     "erasedOn": "borrado el {{date}}",
     "empty": "Nada por aquí."
   },
+  "notifications": {
+    "tabs": {
+      "unread": "No leídas",
+      "read": "Leídas"
+    },
+    "unreadCount_one": "{{count}} notificación no leída",
+    "unreadCount_other": "{{count}} notificaciones no leídas",
+    "loading": "Cargando notificaciones…",
+    "signedOut": "Inicia sesión para ver tus notificaciones.",
+    "loadError": "No se pudieron cargar las notificaciones.",
+    "retry": "Intentar de nuevo",
+    "empty": {
+      "unread": "No tienes notificaciones sin leer.",
+      "read": "No tienes notificaciones leídas."
+    },
+    "selectedCount_one": "{{count}} notificación seleccionada",
+    "selectedCount_other": "{{count}} notificaciones seleccionadas",
+    "selectAll": "Seleccionar todas",
+    "selectAllLabel": "Seleccionar todas las notificaciones no leídas de esta página",
+    "clearSelection": "Quitar selección",
+    "selectLabel": "Seleccionar «{{title}}»",
+    "markRead": "Marcar como leída",
+    "markReadLabel": "Marcar «{{title}}» como leída",
+    "markSelected": "Marcar la selección como leída",
+    "saving": "Marcando como leídas…",
+    "saveError": "No se pudieron marcar las notificaciones como leídas. Inténtalo de nuevo.",
+    "pagination": {
+      "label": "Paginación de notificaciones",
+      "previous": "Anterior",
+      "next": "Siguiente"
+    }
+  },
   "letter": {
     "title": "Solicitud de supresión RGPD",
     "demo": "Carta de demostración: el generador de IA aún no está conectado.",
