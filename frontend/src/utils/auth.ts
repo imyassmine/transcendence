@@ -12,6 +12,10 @@ export function login(email: string, password: string) {
   return api.post<User>(`${AUTH}/login`, { email, password })
 }
 
+export function me() {
+  return api.get<User>(`${AUTH}/me`)
+}
+
 export async function register(name: string, email: string, password: string) {
   await api.post<User>(`${AUTH}/register`, { name, email, password })
   return login(email, password)

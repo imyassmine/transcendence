@@ -17,7 +17,7 @@ export function AuthLayout({ wide = false }: { wide?: boolean }) {
 
       <main className={cn('flex flex-1 justify-center', wide ? 'items-start py-8' : 'items-center pb-16')}>
         <div className={cn('w-full', wide ? 'max-w-2xl' : 'max-w-sm')}>
-          <Link to="/" className="block border-b border-fg pb-3 font-mono text-xs tracking-widest uppercase">
+          <Link to="/welcome" className="block border-b border-fg pb-3 font-mono text-xs tracking-widest uppercase">
             {t('app.name')}
           </Link>
 

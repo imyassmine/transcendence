@@ -51,7 +51,7 @@ export function SignupPage() {
     setSubmitting(true)
     try {
       await register(name.trim(), email.trim(), password)
-      navigate('/')
+      navigate('/onboarding')
     } catch (error) {
       setFormError(authErrorKey(error))
     } finally {
@@ -62,7 +62,6 @@ export function SignupPage() {
   return (
     <>
       <h1 className="mt-6 font-mono text-2xl">{t('auth.signup.title')}</h1>
-      <p className="mt-1 text-sm text-muted">{t('auth.signup.subtitle')}</p>
 
       <form onSubmit={handleSubmit} noValidate className="mt-8 flex flex-col gap-5">
         <TextField
