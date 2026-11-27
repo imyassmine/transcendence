@@ -55,6 +55,7 @@ cover/
 # Translations
 *.mo
 *.pot
+*.DS_Store
 
 # Django stuff:
 *.log
@@ -219,4 +220,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
-tests/
+.ollama/
+
+
+# Dossier tests à la racine uniquement (backend/tests reste versionné)
+/tests/

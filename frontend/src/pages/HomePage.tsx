@@ -1,49 +1,62 @@
-import { Button } from '../components/ui/Button'
+import { useTranslation } from 'react-i18next'
+import { Link, useNavigate } from 'react-router-dom'
 
-const ROWS = [
-  { n: '01', site: '42 paris', type: 'broker', risk: 80, state: 'todo' },
-  { n: '02', site: '42 lisbon', type: 'search', risk: 60, state: 'J-8' },
-  { n: '03', site: '42 tokyo', type: 'social', risk: 30, state: 'erased' },
-]
+import { Button } from '../components/ui/Button'
+import { StatusTag } from '../components/ui/StatusTag'
+import { ORGANISATIONS } from '../data/organisations'
 
 export function HomePage() {
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+  const pendingCount = ORGANISATIONS.filter((org) => org.state.kind === 'pending').length
+
   return (
     <>
       <h1 className="font-mono text-3xl leading-tight md:text-4xl">
-        Your data is held by 3 organisations.
+        {t('home.title', { count: ORGANISATIONS.length })}
       </h1>
-      <p className="mt-3 text-muted">1 erasure request in progress.</p>
+      <p className="mt-3 text-muted">{t('home.subtitle', { count: pendingCount })}</p>
 
-      <table className="mt-10 w-full border-collapse text-sm">
-        <thead>
-          <tr className="border-b border-border text-left font-mono text-xs text-muted uppercase">
-            <th className="py-2 font-normal">N°</th>
-            <th className="py-2 font-normal">Organisation</th>
-            <th className="py-2 font-normal">Type</th>
-            <th className="py-2 font-normal">Risk</th>
-            <th className="py-2 text-right font-normal">State</th>
-          </tr>
-        </thead>
-        <tbody>
-          {ROWS.map((row) => (
-            <tr key={row.n} className="border-b border-border">
-              <td className="py-3 font-mono text-muted">{row.n}</td>
-              <td className="py-3 font-medium">{row.site}</td>
-              <td className="py-3 text-muted">{row.type}</td>
-              <td className="py-3 font-mono tabular-nums">{row.risk}</td>
-              <td className="py-3 text-right">
-                {row.state === 'todo' && <Button size="sm">Start</Button>}
-                {row.state === 'erased' && (
-                  <span className="font-mono text-xs text-success">ERASED</span>
-                )}
-                {row.state.startsWith('J-') && (
-                  <span className="font-mono text-xs text-warning">{row.state}</span>
-                )}
-              </td>
+      <div className="mt-10 overflow-x-auto">
+        <table className="w-full border-collapse text-sm">
+          <thead>
+            <tr className="border-b border-border text-left font-mono text-xs text-muted uppercase">
+              <th className="py-2 font-normal">{t('home.columns.n')}</th>
+              <th className="py-2 font-normal">{t('home.columns.organisation')}</th>
+              <th className="py-2 font-normal">{t('home.columns.type')}</th>
+              <th className="py-2 font-normal">{t('home.columns.risk')}</th>
+              <th className="py-2 text-right font-normal">{t('home.columns.state')}</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {ORGANISATIONS.map((org, index) => (
+              <tr key={org.id} className="border-b border-border">
+                <td className="py-3 pr-3 font-mono text-muted">{String(index + 1).padStart(2, '0')}</td>
+                <td className="py-3 pr-3 font-medium">
+                  <Link to={`/organisations/${org.id}`} className="underline-offset-4 hover:underline">
+                    {org.site}
+                  </Link>
+                </td>
+                <td className="py-3 pr-3 text-muted">{t(`types.${org.type}`)}</td>
+                <td className="py-3 pr-3 font-mono tabular-nums">{org.risk}</td>
+                <td className="py-3 text-right">
+                  {org.state.kind === 'todo' ? (
+                    <Button
+                      size="sm"
+                      aria-label={t('home.startLabel', { site: org.site })}
+                      onClick={() => navigate(`/requests/${org.id}`)}
+                    >
+                      {t('home.start')}
+                    </Button>
+                  ) : (
+                    <StatusTag state={org.state} />
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </>
   )
 }

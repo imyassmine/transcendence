@@ -11,7 +11,8 @@ class Config(BaseSettings):
 
     DB_URL: str
     JWT_SECRET: str
-    JWT_EXPIRE_MINUTES: int = 30
+    JWT_EXPIRE_MINUTES: int = 60
+    IA_LINK_CACHE_TTL_DAYS: int = 30
 
 
 @lru_cache
