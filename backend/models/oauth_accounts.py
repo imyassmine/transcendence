@@ -1,10 +1,11 @@
 from datetime import datetime
 from uuid import UUID, uuid4
 
-from db import Base
-from sqlalchemy import UUID as SQLUUID, func
-from sqlalchemy import String, UniqueConstraint, DateTime, ForeignKey
+from sqlalchemy import UUID as SQLUUID
+from sqlalchemy import DateTime, ForeignKey, String, UniqueConstraint, func
 from sqlalchemy.orm import Mapped, mapped_column
+
+from db import Base
 
 
 class OAuthAccounts(Base):
@@ -17,7 +18,7 @@ class OAuthAccounts(Base):
     user_id: Mapped[UUID] = mapped_column(
         ForeignKey(
             "users.id", ondelete="CASCADE"
-        ),  # établit le lien entre user_id et la colonne id de la table users et ondelete="CASCADE" signifie que si un utilisateur est supprimé de la table users, les associations OAuth correspondantes sont également supprimées.
+        ),
         index=True,
         nullable=False,
     )

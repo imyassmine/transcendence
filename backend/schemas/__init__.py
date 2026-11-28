@@ -5,3 +5,4 @@ from .notifications import (
     NotificationType,
 )
 from .users import User, RegisterRequest, LoginRequest
+from .oauth import GoogleProfile
