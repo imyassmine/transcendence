@@ -1,10 +1,11 @@
 from datetime import datetime
 from uuid import UUID, uuid4
 
-from db import Base
 from sqlalchemy import UUID as SQLUUID
-from sqlalchemy import String, DateTime, func
+from sqlalchemy import DateTime, String, func
 from sqlalchemy.orm import Mapped, mapped_column
+
+from db import Base
 
 
 class Users(Base):

@@ -15,7 +15,7 @@ class Config(BaseSettings):
     IA_LINK_CACHE_TTL_DAYS: int = 30
     GOOGLE_CLIENT_ID: str = ""
     GOOGLE_CLIENT_SECRET: str = ""
-    GOOGLE_REDIRECT_URI: str = "https://localhost:8443/api/v1/auth/oauth/google/callback"
+    GOOGLE_REDIRECT_URI: str = ""
 
 
 @lru_cache

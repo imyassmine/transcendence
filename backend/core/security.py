@@ -1,11 +1,15 @@
-import jwt
 from datetime import datetime, timedelta, timezone
-from argon2 import PasswordHasher
-from argon2.exceptions import VerifyMismatchError, InvalidHashError, VerificationError
-from core.config import get_config
-from fastapi import Response
 from uuid import UUID, uuid4
 
+import jwt
+from argon2 import PasswordHasher
+from argon2.exceptions import (
+    VerificationError,
+    VerifyMismatchError,
+)
+from fastapi import Response
+
+from core.config import get_config
 
 _hasher = PasswordHasher()
 ALGORITHM = "HS256"
@@ -15,10 +19,10 @@ def hash_password(password: str) -> str:
     return _hasher.hash(password)
 
 
-def verify_password(hash: str, password: str) -> bool:
+def verify_password(hashed_password: str, password: str) -> bool:
     try:
-        return _hasher.verify(hash, password)
-    except (VerifyMismatchError, VerificationError, InvalidHashError):
+        return _hasher.verify(hashed_password, password)
+    except (VerifyMismatchError, VerificationError):
         return False
 
 

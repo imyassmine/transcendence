@@ -1,12 +1,12 @@
-from db import get_db
-from fastapi import APIRouter, Depends, HTTPException, status, Response
-from core import create_access_token, set_auth_cookie
-from models import Users
-from schemas import RegisterRequest, User, LoginRequest
-from services import register_user, authenticate_user, get_current_user
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from core import create_access_token, set_auth_cookie
+from db import get_db
+from models import Users
+from schemas import LoginRequest, RegisterRequest, User
+from services import authenticate_user, get_current_user, register_user
 
 auth_router = APIRouter(prefix="/api/v1/auth")
 
@@ -19,7 +19,9 @@ async def register(
     user = await register_user(session, data)
     try:
         await session.commit()
-    except IntegrityError:  # violation de contraintes SQL (email déjà pris etc)
+    except (
+        IntegrityError
+    ):  # violation de contraintes SQL (email déjà pris etc)
         await session.rollback()
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
@@ -37,7 +39,8 @@ async def login(
     user = await authenticate_user(session, data)
     if user is None:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials"
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid credentials",
         )
     token = create_access_token(user.id)
     set_auth_cookie(response, token)

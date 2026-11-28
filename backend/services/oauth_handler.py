@@ -1,7 +1,9 @@
-from models import Users, OAuthAccounts
-from .user_handler import normalize_email
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from models import OAuthAccounts, Users
+
+from .user_handler import normalize_email
 
 
 class OAuthEmailConflict(Exception):
@@ -37,7 +39,9 @@ async def get_or_create_oauth_user(
     await session.flush()  # génère user.id
     session.add(
         OAuthAccounts(
-            user_id=user.id, provider=provider, provider_user_id=provider_user_id
+            user_id=user.id,
+            provider=provider,
+            provider_user_id=provider_user_id,
         )
     )
     await session.flush()
