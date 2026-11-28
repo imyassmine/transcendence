@@ -3,6 +3,69 @@
     "name": "Transcendence",
     "tagline": "Find and erase your data online."
   },
+  "welcome": {
+    "kicker": "GDPR · Article 17",
+    "title": "Find what the internet knows about you. Then erase it.",
+    "subtitle": "Transcendence finds the organisations that hold your personal data, scores the risk, writes the legal erasure request for you and tracks the one-month deadline.",
+    "signup": "Create my dossier",
+    "how": "How it works",
+    "steps": {
+      "find": {
+        "title": "Find",
+        "body": "We look for your data at data brokers, search engines and social networks, and in known data breaches."
+      },
+      "score": {
+        "title": "Score",
+        "body": "Each organisation gets a risk score from 0 to 100, so you know where to start."
+      },
+      "request": {
+        "title": "Request",
+        "body": "We write a GDPR erasure letter that cites the right articles, ready to send to the organisation's data protection officer."
+      },
+      "track": {
+        "title": "Track",
+        "body": "The organisation has one month to answer. We count the days and tell you when the deadline has passed."
+      }
+    },
+    "law": {
+      "label": "Your right",
+      "text": "Under Article 17 of the GDPR, you can ask any organisation that processes your personal data to erase it. It must answer within one month, free of charge."
+    },
+    "promises": {
+      "title": "Our commitments",
+      "items": [
+        "No ads, no trackers, no third-party fonts.",
+        "Your data is never sold or shared.",
+        "Export all your data as JSON at any time.",
+        "Delete your account whenever you want, and your data goes with it."
+      ]
+    },
+    "final": "Ready to take your data back?"
+  },
+  "onboarding": {
+    "progress": "Step {{current}} of {{total}}",
+    "skip": "Skip",
+    "back": "Back",
+    "next": "Next",
+    "finish": "Open my dossier",
+    "steps": {
+      "dossier": {
+        "title": "This is your dossier",
+        "body": "Every organisation that holds data about you is listed here, with its type and the status of your request."
+      },
+      "risk": {
+        "title": "Read the risk score",
+        "body": "The higher the score, the more exposed your data is. Start with the red ones: data brokers and breaches first."
+      },
+      "request": {
+        "title": "Send a request, we count the days",
+        "body": "Press {{start}} next to an organisation: we prepare the letter, you send it. The bar then fills up over the 30 days the organisation has to answer."
+      }
+    },
+    "example": {
+      "deadline": "Example: request sent 12 days ago"
+    }
+  },
   "nav": {
     "label": "Main menu",
     "dossier": "Dossier",
@@ -175,7 +238,6 @@
     },
     "signup": {
       "title": "Sign up",
-      "subtitle": "See where your data is, then make it disappear.",
       "submit": "Create my account",
       "submitting": "Creating your account…",
       "hasAccount": "Already have an account?",
@@ -205,6 +267,11 @@
       "lower": "1 lowercase letter",
       "digit": "1 digit",
       "special": "1 special character"
+    },
+    "session": {
+      "checking": "Checking your session…",
+      "error": "Could not check your session. The server may be down.",
+      "retry": "Try again"
     }
   },
   "apiKeys": {

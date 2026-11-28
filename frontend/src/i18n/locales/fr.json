@@ -3,6 +3,69 @@
     "name": "Transcendence",
     "tagline": "Trouvez et effacez vos données en ligne."
   },
+  "welcome": {
+    "kicker": "RGPD · Article 17",
+    "title": "Découvrez ce qu'Internet sait de vous. Puis effacez-le.",
+    "subtitle": "Transcendence trouve les organismes qui détiennent vos données personnelles, évalue le risque, rédige pour vous la demande d'effacement et suit le délai légal d'un mois.",
+    "signup": "Créer mon dossier",
+    "how": "Comment ça marche",
+    "steps": {
+      "find": {
+        "title": "Trouver",
+        "body": "Nous cherchons vos données chez les courtiers en données, les moteurs de recherche, les réseaux sociaux et dans les fuites de données connues."
+      },
+      "score": {
+        "title": "Évaluer",
+        "body": "Chaque organisme reçoit un score de risque de 0 à 100, pour savoir par où commencer."
+      },
+      "request": {
+        "title": "Demander",
+        "body": "Nous rédigeons une lettre d'effacement RGPD qui cite les bons articles, prête à envoyer au délégué à la protection des données de l'organisme."
+      },
+      "track": {
+        "title": "Suivre",
+        "body": "L'organisme a un mois pour répondre. Nous comptons les jours et vous prévenons quand le délai est dépassé."
+      }
+    },
+    "law": {
+      "label": "Votre droit",
+      "text": "L'article 17 du RGPD vous permet de demander à tout organisme qui traite vos données personnelles de les effacer. Il doit vous répondre dans un délai d'un mois, gratuitement."
+    },
+    "promises": {
+      "title": "Nos engagements",
+      "items": [
+        "Pas de publicité, pas de traceurs, pas de polices tierces.",
+        "Vos données ne sont jamais vendues ni partagées.",
+        "Exportez toutes vos données en JSON à tout moment.",
+        "Supprimez votre compte quand vous voulez : vos données partent avec lui."
+      ]
+    },
+    "final": "Envie de reprendre la main sur vos données ?"
+  },
+  "onboarding": {
+    "progress": "Étape {{current}} sur {{total}}",
+    "skip": "Passer",
+    "back": "Retour",
+    "next": "Suivant",
+    "finish": "Ouvrir mon dossier",
+    "steps": {
+      "dossier": {
+        "title": "Voici votre dossier",
+        "body": "Chaque organisme qui détient des données sur vous est listé ici, avec son type et l'état de votre demande."
+      },
+      "risk": {
+        "title": "Lire le score de risque",
+        "body": "Plus le score est élevé, plus vos données sont exposées. Commencez par les rouges : courtiers en données et fuites en priorité."
+      },
+      "request": {
+        "title": "Envoyez une demande, on compte les jours",
+        "body": "Appuyez sur {{start}} à côté d'un organisme : nous préparons la lettre, vous l'envoyez. La barre se remplit ensuite pendant les 30 jours dont l'organisme dispose pour répondre."
+      }
+    },
+    "example": {
+      "deadline": "Exemple : demande envoyée il y a 12 jours"
+    }
+  },
   "nav": {
     "label": "Menu principal",
     "dossier": "Dossier",
@@ -175,7 +238,6 @@
     },
     "signup": {
       "title": "Inscription",
-      "subtitle": "Découvrez où sont vos données, puis faites-les disparaître.",
       "submit": "Créer mon compte",
       "submitting": "Création du compte…",
       "hasAccount": "Déjà un compte ?",
@@ -205,6 +267,11 @@
       "lower": "1 minuscule",
       "digit": "1 chiffre",
       "special": "1 caractère spécial"
+    },
+    "session": {
+      "checking": "Vérification de votre session…",
+      "error": "Impossible de vérifier votre session. Le serveur est peut-être indisponible.",
+      "retry": "Réessayer"
     }
   },
   "apiKeys": {

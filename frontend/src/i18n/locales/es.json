@@ -3,6 +3,69 @@
     "name": "Transcendence",
     "tagline": "Encuentra y borra tus datos en internet."
   },
+  "welcome": {
+    "kicker": "RGPD · Artículo 17",
+    "title": "Descubre lo que internet sabe de ti. Y bórralo.",
+    "subtitle": "Transcendence encuentra las organizaciones que tienen tus datos personales, evalúa el riesgo, redacta por ti la solicitud de supresión y sigue el plazo legal de un mes.",
+    "signup": "Crear mi expediente",
+    "how": "Cómo funciona",
+    "steps": {
+      "find": {
+        "title": "Encontrar",
+        "body": "Buscamos tus datos en brókeres de datos, motores de búsqueda y redes sociales, y en filtraciones de datos conocidas."
+      },
+      "score": {
+        "title": "Evaluar",
+        "body": "Cada organización recibe una puntuación de riesgo de 0 a 100, para que sepas por dónde empezar."
+      },
+      "request": {
+        "title": "Solicitar",
+        "body": "Redactamos una carta de supresión RGPD que cita los artículos adecuados, lista para enviar al delegado de protección de datos de la organización."
+      },
+      "track": {
+        "title": "Seguir",
+        "body": "La organización tiene un mes para responder. Contamos los días y te avisamos cuando vence el plazo."
+      }
+    },
+    "law": {
+      "label": "Tu derecho",
+      "text": "El artículo 17 del RGPD te permite pedir a cualquier organización que trate tus datos personales que los suprima. Debe responderte en el plazo de un mes, de forma gratuita."
+    },
+    "promises": {
+      "title": "Nuestros compromisos",
+      "items": [
+        "Sin publicidad, sin rastreadores, sin fuentes de terceros.",
+        "Tus datos nunca se venden ni se comparten.",
+        "Exporta todos tus datos en JSON cuando quieras.",
+        "Elimina tu cuenta cuando quieras: tus datos se van con ella."
+      ]
+    },
+    "final": "¿Recuperamos el control de tus datos?"
+  },
+  "onboarding": {
+    "progress": "Paso {{current}} de {{total}}",
+    "skip": "Saltar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "finish": "Abrir mi expediente",
+    "steps": {
+      "dossier": {
+        "title": "Este es tu expediente",
+        "body": "Aquí aparece cada organización que tiene datos sobre ti, con su tipo y el estado de tu solicitud."
+      },
+      "risk": {
+        "title": "Lee la puntuación de riesgo",
+        "body": "Cuanto más alta es la puntuación, más expuestos están tus datos. Empieza por las rojas: primero brókeres de datos y filtraciones."
+      },
+      "request": {
+        "title": "Envía una solicitud, nosotros contamos los días",
+        "body": "Pulsa {{start}} junto a una organización: preparamos la carta y tú la envías. Después, la barra se llena durante los 30 días que tiene la organización para responder."
+      }
+    },
+    "example": {
+      "deadline": "Ejemplo: solicitud enviada hace 12 días"
+    }
+  },
   "nav": {
     "label": "Menú principal",
     "dossier": "Expediente",
@@ -175,7 +238,6 @@
     },
     "signup": {
       "title": "Registro",
-      "subtitle": "Descubre dónde están tus datos y haz que desaparezcan.",
       "submit": "Crear mi cuenta",
       "submitting": "Creando tu cuenta…",
       "hasAccount": "¿Ya tienes cuenta?",
@@ -205,6 +267,11 @@
       "lower": "1 minúscula",
       "digit": "1 cifra",
       "special": "1 carácter especial"
+    },
+    "session": {
+      "checking": "Comprobando tu sesión…",
+      "error": "No se pudo comprobar tu sesión. Puede que el servidor no esté disponible.",
+      "retry": "Reintentar"
     }
   },
   "apiKeys": {
